@@ -1,7 +1,6 @@
 import os
 import psycopg2, re, hashlib
 from flask import Flask, Response, redirect, url_for, request, make_response, render_template
-from flask_caching import Cache
 import json
 
 config = {
@@ -65,6 +64,7 @@ def register():
     user = args.get("user", None)
     password = args.get("password", None)
     email = args.get("email", None)
+    city = args.get("city", None)
     if not re.fullmatch(regex, email):
         return make_response("<i>Niepoprawny email</i>")
 
@@ -73,11 +73,12 @@ def register():
         conn = get_db_connection()
         cur = conn.cursor()
         try:
-            cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email)'
-                        'VALUES (%s, %s, %s)',
+            cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
+                        'VALUES (%s, %s, %s, %s)',
                         (user,
                          password2,
-                         email)
+                         email,
+                         city)
                         )
             conn.commit()
             cur.close()
@@ -88,16 +89,21 @@ def register():
     else:
         return make_response("<i> rejestracja sie nie udala</i>")
 
-@app.route('/')
-def main():
-    return render_template('index.html')
-
 @app.route('/aa')
 def aa():
     args = request.args
     app.logger.error(args.get("kasper"))
     return json.dumps(args)
 
+@app.route('/')
+def main():
+    return render_template('index.html')
+
+@app.route('/profil')
+def profil():
+    return render_template('profil.html')
+
 
 if __name__ == '__main__':
     app.run()
+

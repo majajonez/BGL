@@ -17,14 +17,16 @@ try:
         cur.execute('CREATE TABLE logowanie_uzytkownikow (id serial PRIMARY KEY,'
                                         'login text NOT NULL UNIQUE,'
                                         'haslo text NOT NULL,'
-                                        'email text NOT NULL UNIQUE);'
+                                        'email text NOT NULL UNIQUE'
+                                        'city text);'
                                          )
 
-        cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email)'
-                    'VALUES (%s, %s, %s)',
+        cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
+                    'VALUES (%s, %s, %s, %s)',
                     ('maja',
                      haslo,
-                     'majonezik93@gmail.com')
+                     'majonezik93@gmail.com',
+                     'Warszawa')
                     )
 
         conn.commit()
