@@ -17,7 +17,7 @@ try:
         cur.execute('CREATE TABLE logowanie_uzytkownikow (id serial PRIMARY KEY,'
                                         'login text NOT NULL UNIQUE,'
                                         'haslo text NOT NULL,'
-                                        'email text NOT NULL UNIQUE'
+                                        'email text NOT NULL UNIQUE,'
                                         'city text);'
                                          )
 
@@ -28,6 +28,8 @@ try:
                      'majonezik93@gmail.com',
                      'Warszawa')
                     )
+
+
 
         conn.commit()
 
