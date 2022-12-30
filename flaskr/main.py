@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(bp)
-    app.add_url_rule('/', endpoint='auth.login')
+    app.add_url_rule('/', endpoint='main.profil')
 
     app.run()
 
