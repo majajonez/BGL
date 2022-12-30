@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Board Games Lovers{% endblock %}</h1>
+  <h1>{% block title %}Strona Główna{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 <b>Tu będą wyświetlane wydarzenia</b>
+  <form method="post">
+    <input type="submit" value="Utwórz wydarzenie">
+  </form>
 {% endblock %}

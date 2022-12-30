@@ -70,7 +70,7 @@ def login():
             if password2 == uzytkownik[0][2]:
                 session.clear()
                 session['user_id'] = uzytkownik[0][0] #todo: uzyc nazwy kolumny
-                return redirect(url_for('main.profil'))
+                return redirect(url_for('main.main_page'))
             else:
                 error = 'Incorrect password.'
         else:

@@ -29,7 +29,24 @@ try:
                      'Warszawa')
                     )
 
-
+        cur.execute('DROP TABLE IF EXISTS wydarzenia;')
+        cur.execute('CREATE TABLE wydarzenia (id serial PRIMARY KEY,'
+                    'login text NOT NULL,'
+                    'jaka_gra text NOT NULL,'
+                    'opis text,'
+                    'kiedy text NOT NULL,'
+                    'gdzie text NOT NULL,'
+                    'ile_miejsc smallint);'
+                    )
+        cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc)'
+                    'VALUES (%s, %s, %s, %s, %s, %s)',
+                    ('maja',
+                     'Azul',
+                     'Kafelkowa gra logiczna',
+                     '01.01.2023',
+                     'Warszawa',
+                     4)
+                    )
 
         conn.commit()
 
