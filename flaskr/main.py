@@ -16,6 +16,32 @@ app.config.from_mapping(config)
 bp = Blueprint('main', __name__)
 
 
+class Event:
+    def __init__(self, wydarzenie):
+        self.id = wydarzenie[0]
+        self.login = wydarzenie[1]
+        self.jaka_gra = wydarzenie[2]
+        self.opis = wydarzenie[3]
+        self.kiedy = wydarzenie[4]
+        self.gdzie = wydarzenie[5]
+        self.ile_miejsc = wydarzenie[6]
+
+def get_events():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM wydarzenia')
+    wydarzenia = cur.fetchall()
+    cur.close()
+    event_list = []
+
+    for w in wydarzenia:
+        event = Event(w)
+        event_list.append(event)
+    return event_list
+
+
+
+
 @bp.route('/profil')
 @login_required
 def profil():
@@ -24,10 +50,12 @@ def profil():
 
 @bp.route('/main_page', methods=['GET', 'POST'])
 def main_page():
+    events = get_events()
+
     if request.method == 'POST':
         return redirect(url_for('main.event'))
 
-    return render_template('main/main_page.html')
+    return render_template('main/main_page.html', events=events)
 
 
 @bp.route('/event', methods=['GET', 'POST'])

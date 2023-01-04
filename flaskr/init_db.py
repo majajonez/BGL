@@ -18,7 +18,8 @@ try:
                                         'login text NOT NULL UNIQUE,'
                                         'haslo text NOT NULL,'
                                         'email text NOT NULL UNIQUE,'
-                                        'city text);'
+                                        'city text,'
+                                        'opis text);'
                                          )
 
         cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
