@@ -70,7 +70,7 @@ def login():
             if password2 == uzytkownik[0][2]:
                 session.clear()
                 session['user_id'] = uzytkownik[0][0] #todo: uzyc nazwy kolumny
-                return redirect(url_for('main.main_page'))
+                return redirect(url_for('main.profil'))
             else:
                 error = 'Incorrect password.'
         else:
@@ -86,17 +86,26 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_user_by_id(user_id)[0]
+        g.user = get_user_by_id(user_id)
 
+
+class User:
+    def __init__(self, user):
+        self.id = user[0]
+        self.login = user[1]
+        self.haslo = user[2]
+        self.email = user[3]
+        self.city = user[4]
+        self.opis = user[5]
 
 def get_user_by_id(x):
     conn = get_db()
     cur = conn.cursor()
     cur.execute('SELECT * FROM logowanie_uzytkownikow'
                 f' WHERE id = \'{x}\'')
-    uzytkownik = cur.fetchall() #todo: fetchone
+    uzytkownik = cur.fetchone()
     cur.close()
-    return uzytkownik
+    return User(uzytkownik)
 
 @bp.route('/logout')
 def logout():

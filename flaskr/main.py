@@ -1,10 +1,10 @@
 from flask import (
-    Blueprint, render_template, request, redirect, url_for, flash
+    Blueprint, render_template, request, redirect, url_for, flash, session, g
 )
 from flask import Flask
 
 from flaskr import db, auth
-from flaskr.auth import login_required
+from flaskr.auth import login_required, load_logged_in_user, get_user_by_id
 from flaskr.db import get_db
 
 config = {
@@ -40,11 +40,76 @@ def get_events():
     return event_list
 
 
-
-
-@bp.route('/profil')
+@bp.route('/profil', methods=['GET', 'POST'])
 @login_required
 def profil():
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return render_template('main/profil.html')
 
 

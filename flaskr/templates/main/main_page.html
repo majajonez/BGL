@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block content %}
-<h1>Wydarzenia</h1>
 <ol>
 {% for event in events %}
-  <li>
-    <div class="post">
-      <div>{{ event.login|e }}</div>
-      <div>{{ event.jaka_gra|e }}</div>
-      <div>{{ event.opis|e }}</div>
-      <div>{{ event.kiedy|e }}</div>
-      <div>{{ event.gdzie|e }}</div>
-      <div>{{ event.ile_miejsc|e }}</div>
+  <li type="circle">
+    <div class="container">
+      <strong>
+        <div>{{ event.login|e }}</div>
+        <div>{{ event.jaka_gra|e }}</div>
+        <div>{{ event.opis|e }}</div>
+        <div>{{ event.kiedy|e }}</div>
+        <div>{{ event.gdzie|e }}</div>
+        <div>{{ event.ile_miejsc|e }}</div>
+       </strong>
+      <hr>
     </div>
   </li>
 {% endfor %}
