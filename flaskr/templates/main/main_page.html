@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Strona Główna{% endblock %}</h1>
+
 {% endblock %}
 
 {% block content %}
-<ol>
+
 {% for event in events %}
-  <li type="circle">
-    <div class="container">
-      <strong>
-        <div>{{ event.login|e }}</div>
-        <div>{{ event.jaka_gra|e }}</div>
-        <div>{{ event.opis|e }}</div>
-        <div>{{ event.kiedy|e }}</div>
-        <div>{{ event.gdzie|e }}</div>
-        <div>{{ event.ile_miejsc|e }}</div>
-       </strong>
-      <hr>
+  <div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
+        <p class="card-text">
+          <div>{{ event.login|e }}</div>
+          <div>{{ event.opis|e }}</div>
+          <div>{{ event.kiedy|e }}</div>
+          <div>{{ event.gdzie|e }}</div>
+          <div>{{ event.ile_miejsc|e }}</div>
+        </p>
+        <a href="#" class="btn btn-primary">Dołącz</a>
+      </div>
     </div>
-  </li>
+  </div>
 {% endfor %}
-</ol>
-  <form method="post">
-    <input type="submit" value="Utwórz wydarzenie">
-  </form>
+
 {% endblock %}
