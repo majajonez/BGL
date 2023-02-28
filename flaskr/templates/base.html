@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
     <title>Board Games Lovers</title>
   </head>
   <body>
@@ -23,28 +22,24 @@
           <li class="nav-item">
             <a class="nav-link active" href="event">Utwórz wydarzenie</a>
           </li>
-<!--          <li class="nav-item">-->
-<!--            <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Wyloguj</a>-->
-<!--          </li>-->
-          {% if g.user %}
+        </ul>
+        <form class="d-flex">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {% if g.user %}
             <li class="nav-item"><span class="nav-link">Witaj, {{ g.user.login }}</span></li>
             <li class="nav-item"><a class="nav-link active" tabindex="-1" href="{{ url_for('auth.logout') }}">Log Out</a></li>
           {% else %}
             <li class="nav-item"><a class="nav-link active" tabindex="-1" href="{{ url_for('auth.register') }}">Register</a></li>
             <li class="nav-item"><a class="nav-link active" tabindex="-1" href="{{ url_for('auth.login') }}">Log In</a></li>
           {% endif %}
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          </ul>
         </form>
       </div>
     </div>
   </nav>
+
 <section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
+
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
@@ -53,5 +48,4 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 
-</div>
   </body>
