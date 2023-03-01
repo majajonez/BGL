@@ -13,13 +13,14 @@
         </div>
 
         <div class="btn-group d-flex" role="group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked value="1">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked
+                   value="login">
             <label class="btn btn-outline-primary" for="btnradio1">login</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="2">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="gra">
             <label class="btn btn-outline-primary" for="btnradio2">gra</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="3">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="miasto">
             <label class="btn btn-outline-primary" for="btnradio3">miasto</label>
         </div>
     </form>
@@ -28,6 +29,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
+            {% if event.type == "event" %}
             <div class="card-body">
                 <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
                 <p class="card-text">
@@ -36,11 +38,19 @@
                 <div>{{ event.kiedy|e }}</div>
                 <div>{{ event.gdzie|e }}</div>
                 <div>{{ event.ile_miejsc|e }}</div>
-                </p>
+
                 <a href="#" class="btn btn-primary">Dołącz</a>
             </div>
-        </div>
-    </div>
-    {% endfor %}
+            {% else %}
+            <div class="card-body">
+                <h5 class="card-title">{{ event.login|e }}</h5>
+                <p class="card-text">
+                <div>{{ event.city|e }}</div>
+                <div>{{ event.opis|e }}</div>
 
-    {% endblock %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% endblock %}
