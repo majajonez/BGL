@@ -26,6 +26,7 @@ class Event:
         self.gdzie = wydarzenie[5]
         self.ile_miejsc = wydarzenie[6]
 
+
 def get_events():
     conn = get_db()
     cur = conn.cursor()
@@ -40,21 +41,38 @@ def get_events():
     return event_list
 
 
+def get_events_by_name(name):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM wydarzenia WHERE jaka_gra like %(name)s', {"name": '%' + name + '%'})
+    wydarzenia = cur.fetchall()
+    cur.close()
+    event_list = []
+
+    for w in wydarzenia:
+        event = Event(w)
+        event_list.append(event)
+    return event_list
+
+
 @bp.route('/profil', methods=['GET', 'POST'])
 @login_required
 def profil():
-
-
     return render_template('main/profil.html')
+
+
+@bp.route('/search', methods=['POST'])
+def search():
+    args = request.form
+    fraza = args.get("fraza", None)
+    radio = args.get("btnradio", None)
+    events = get_events_by_name(fraza)
+    return render_template('main/main_page.html', events=events)
 
 
 @bp.route('/main_page', methods=['GET', 'POST'])
 def main_page():
     events = get_events()
-
-    if request.method == 'POST':
-        return redirect(url_for('main.event'))
-
     return render_template('main/main_page.html', events=events)
 
 

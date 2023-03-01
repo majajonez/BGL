@@ -1,25 +1,33 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Wydarzenie{% endblock %}</h1>
+<h1>{% block title %}Wydarzenie{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-<b>Formularz do tworzenia wydarzenia</b>
+<p class="fs-4">Utwórz nowe wydarzenie</p>
 
-  <form method="post">
-    <label for="user">Username</label>
-    <input name="user" id="user" required>
-    <label for="title">Tytuł gry</label>
-    <input name="title" id="title" required>
-    <label for="description">Opis gry</label>
-    <input name="description" id="description" required>
-    <label for="when">Kiedy</label>
-    <input name="when" id="when" required>
-    <label for="where">Gdzie</label>
-    <input name="where" id="where" required>
-    <label for="the_number_of_seats">Liczba miejsc</label>
-    <input name="the_number_of_seats" id="the_number_of_seats" required>
-    <input type="submit" value="Utwórz wydarzenie">
-  </form>
+<div class="container-fluid">
+    <form class="p-3 mb-2 bg-light text-dark">
+        <label for="user">Organizator</label><br>
+        <input name="user" id="user" required><br>
+        <br>
+        <label for="title">Tytuł gry</label><br>
+        <input name="title" id="title" required><br>
+        <br>
+        <label for="description">Opis gry</label><br>
+        <input name="description" id="description" required><br>
+        <br>
+        <label for="when">Termin</label><br>
+        <input name="when" id="when" required><br>
+        <br>
+        <label for="where">Miejsce</label><br>
+        <input name="where" id="where" required><br>
+        <br>
+        <label for="the_number_of_seats">Liczba miejsc</label><br>
+        <input name="the_number_of_seats" id="the_number_of_seats" required><br>
+        <br>
+        <input type="submit" value="Utwórz wydarzenie">
+    </form>
+</div>
 {% endblock %}

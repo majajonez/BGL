@@ -5,24 +5,42 @@
 {% endblock %}
 
 {% block content %}
+<div class="container-fluid ">
+    <form class="search-bar" method="post" action="search">
+        <div class="d-flex">
+            <input class="form-control me-2" type="search" name="fraza" placeholder="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </div>
 
+        <div class="btn-group d-flex" role="group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked value="1">
+            <label class="btn btn-outline-primary" for="btnradio1">login</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="2">
+            <label class="btn btn-outline-primary" for="btnradio2">gra</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="3">
+            <label class="btn btn-outline-primary" for="btnradio3">miasto</label>
+        </div>
+    </form>
+</div>
 {% for event in events %}
-  <div class="row">
-  <div class="col-sm-12">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
-        <p class="card-text">
-          <div>{{ event.login|e }}</div>
-          <div>{{ event.opis|e }}</div>
-          <div>{{ event.kiedy|e }}</div>
-          <div>{{ event.gdzie|e }}</div>
-          <div>{{ event.ile_miejsc|e }}</div>
-        </p>
-        <a href="#" class="btn btn-primary">Dołącz</a>
-      </div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
+                <p class="card-text">
+                <div>{{ event.login|e }}</div>
+                <div>{{ event.opis|e }}</div>
+                <div>{{ event.kiedy|e }}</div>
+                <div>{{ event.gdzie|e }}</div>
+                <div>{{ event.ile_miejsc|e }}</div>
+                </p>
+                <a href="#" class="btn btn-primary">Dołącz</a>
+            </div>
+        </div>
     </div>
-  </div>
-{% endfor %}
+    {% endfor %}
 
-{% endblock %}
+    {% endblock %}
