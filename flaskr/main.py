@@ -25,6 +25,14 @@ class Event:
         self.kiedy = wydarzenie[4]
         self.gdzie = wydarzenie[5]
         self.ile_miejsc = wydarzenie[6]
+        self.type = "event"
+
+class Person:
+    def __init__(self, profil):
+        self.login = profil[1]
+        self.city = profil[4]
+        self.opis = profil[5]
+        self.type = "person"
 
 
 def get_events():
@@ -41,10 +49,36 @@ def get_events():
     return event_list
 
 
-def get_events_by_name(name):
+def get_events_by_game(game):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM wydarzenia WHERE jaka_gra like %(name)s', {"name": '%' + name + '%'})
+    cur.execute('SELECT * FROM wydarzenia WHERE jaka_gra LIKE %(game)s', {"game": '%' + game + '%'})
+    wydarzenia = cur.fetchall()
+    cur.close()
+    event_list = []
+
+    for w in wydarzenia:
+        event = Event(w)
+        event_list.append(event)
+    return event_list
+
+def get_events_by_login(login):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE login LIKE %(login)s', {"login": '%' + login + '%'})
+    profile = cur.fetchall()
+    cur.close()
+    profil_list = []
+
+    for p in profile:
+        person = Person(p)
+        profil_list.append(person)
+    return profil_list
+
+def get_events_by_city(city):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM wydarzenia WHERE city LIKE %(city)s', {"city": '%' + city + '%'})
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
@@ -58,6 +92,22 @@ def get_events_by_name(name):
 @bp.route('/profil', methods=['GET', 'POST'])
 @login_required
 def profil():
+    if request.method == "POST":
+        args = request.form
+        photo = args.get("photo", None)
+        conn = get_db()
+        cur = conn.cursor()
+        try:
+            cur.execute('INSERT INTO logowanie_uzytkownikow (photo)'
+                        'VALUES (%s)',
+                        (photo)
+                        )
+            conn.commit()
+            cur.close()
+        except:
+            error = "<i>nie udało się przesłać zdjęcia</i>"
+        else:
+            return render_template('main/profil.html')
     return render_template('main/profil.html')
 
 
@@ -66,7 +116,15 @@ def search():
     args = request.form
     fraza = args.get("fraza", None)
     radio = args.get("btnradio", None)
-    events = get_events_by_name(fraza)
+    events = []
+    if radio == "login":
+        events = get_events_by_login(fraza)
+    elif radio == "gra":
+        events = get_events_by_game(fraza)
+    elif radio == "city":
+        events = get_events_by_city(fraza)
+    else:
+        raise Exception("not supported type")
     return render_template('main/main_page.html', events=events)
 
 
