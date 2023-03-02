@@ -1,3 +1,4 @@
+import base64
 import functools, re, hashlib
 
 from flask import (
@@ -6,7 +7,6 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from flaskr.db import get_db
-from flaskr.init_db import conn
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -96,6 +96,10 @@ class User:
         self.email = user[3]
         self.city = user[4]
         self.opis = user[5]
+        if user[6]:
+            self.photo = base64.b64encode(user[6]).decode('ascii')
+            print(self.photo)
+
 
 def get_user_by_id(x):
     conn = get_db()

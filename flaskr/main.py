@@ -1,7 +1,10 @@
+from base64 import b64encode
+
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, session, g
 )
 from flask import Flask
+from werkzeug.utils import secure_filename
 
 from flaskr import db, auth
 from flaskr.auth import login_required, load_logged_in_user, get_user_by_id
@@ -169,6 +172,36 @@ def event():
         flash(error)
     return render_template('main/event.html')
 
+
+@app.route('/upload_photo', methods=['POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'uploaded-file' not in request.files:
+            flash('No file part')
+            print("aaa")
+            return redirect('profil')
+        file = request.files['uploaded-file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            print("bbb")
+            return redirect('profil')
+        if file:
+            conn = get_db()
+            cur = conn.cursor()
+            try:
+                cur.execute('UPDATE logowanie_uzytkownikow SET photo=%s WHERE id = %s',
+                            (file.stream.read(), g.user.id)
+                            )
+                conn.commit()
+                cur.close()
+            except:
+                error = "<i>zdjęcie nie zostało zapisane</i>"
+            else:
+                return redirect(url_for("main.profil"))
+        return redirect(url_for("main.profil"))
 
 if __name__ == '__main__':
     db.init_app(app)

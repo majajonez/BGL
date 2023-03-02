@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Profil{% endblock %}</h1>
+<h1>{% block title %}Profil{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
 <br>
+<!--<div><img src="data:image/jpg;base64,{{ g.user.photo }}" alt="" class="page"></div>-->
 <div class="card" style="width: 18rem;">
-  <div class="card-header">
-    Featured
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">{{ g.user.login|e }}</li>
-    <li class="list-group-item">{{ g.user.city|e }}</li>
-    <li class="list-group-item">{{ g.user.opis|e }}</li>
-  </ul>
+    <div class="card-header">
+        <img src="data:image/jpg;base64,{{ g.user.photo }}" alt="" class="page img-fluid">
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ g.user.login|e }}</li>
+        <li class="list-group-item">{{ g.user.city|e }}</li>
+        <li class="list-group-item">{{ g.user.opis|e }}</li>
+    </ul>
 </div>
 <br>
 <div>
-  <label for="formFileLg" class="form-label">wybierz zdjęcie profilowe</label>
-  <input class="form-control form-control-lg" id="formFileLg" type="file">
+    <form method="post" action="upload_photo" enctype=multipart/form-data>
+        <label for="formFileLg" class="form-label">wybierz zdjęcie profilowe</label>
+        <input class="form-control form-control-lg" id="formFileLg" type="file" name="uploaded-file"><br>
+        <input type="submit" value="Zapisz">
+    </form>
 </div>
 
 
