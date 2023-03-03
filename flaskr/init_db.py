@@ -39,7 +39,8 @@ if __name__ == '__main__':
                         'opis text,'
                         'kiedy text NOT NULL,'
                         'gdzie text NOT NULL,'
-                        'ile_miejsc smallint);'
+                        'ile_miejsc smallint,'
+                        'photo bytea);'
                         )
             cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc)'
                         'VALUES (%s, %s, %s, %s, %s, %s)',

@@ -1,3 +1,4 @@
+import base64
 from base64 import b64encode
 
 from flask import (
@@ -29,6 +30,10 @@ class Event:
         self.gdzie = wydarzenie[5]
         self.ile_miejsc = wydarzenie[6]
         self.type = "event"
+        print(wydarzenie[7])
+        if wydarzenie[7]:
+            self.photo = base64.b64encode(wydarzenie[7]).decode('ascii')
+            print(self.photo)
 
 class Person:
     def __init__(self, profil):
@@ -147,19 +152,21 @@ def event():
         when = args.get("when", None)
         where = args.get("where", None)
         the_number_of_seats = args.get("the_number_of_seats", None)
+        photo = request.files['uploaded-file']
         error = None
         if user and title and description and when and where and the_number_of_seats:
             conn = get_db()
             cur = conn.cursor()
             try:
-                cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc)'
-                            'VALUES (%s, %s, %s, %s, %s, %s)',
+                cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc, photo)'
+                            'VALUES (%s, %s, %s, %s, %s, %s, %s)',
                             (user,
                              title,
                              description,
                              when,
                              where,
-                             the_number_of_seats)
+                             the_number_of_seats,
+                             photo.stream.read())
                             )
                 conn.commit()
                 cur.close()

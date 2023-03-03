@@ -98,7 +98,6 @@ class User:
         self.opis = user[5]
         if user[6]:
             self.photo = base64.b64encode(user[6]).decode('ascii')
-            print(self.photo)
 
 
 def get_user_by_id(x):

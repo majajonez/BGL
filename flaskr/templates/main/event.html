@@ -8,7 +8,7 @@
 <p class="fs-4">Utwórz nowe wydarzenie</p>
 
 <div class="container-fluid">
-    <form class="p-3 mb-2 bg-light text-dark">
+    <form class="p-3 mb-2 bg-light text-dark" method="post" enctype=multipart/form-data>
         <label for="user">Organizator</label><br>
         <input name="user" id="user" required><br>
         <br>
@@ -27,6 +27,8 @@
         <label for="the_number_of_seats">Liczba miejsc</label><br>
         <input name="the_number_of_seats" id="the_number_of_seats" required><br>
         <br>
+        <label for="formFileLg" class="form-label">wybierz zdjęcie</label>
+        <input class="form-control form-control-lg" id="formFileLg" type="file" name="uploaded-file"><br>
         <input type="submit" value="Utwórz wydarzenie">
     </form>
 </div>

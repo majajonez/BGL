@@ -28,17 +28,18 @@
 {% for event in events %}
 <div class="row">
     <div class="col-sm-12">
-        <div class="card">
+        <div class="card" style="width: 18rem;">
             {% if event.type == "event" %}
+            <img src="data:image/jpg;base64,{{ event.photo }}" class="card-img-top" alt="">
             <div class="card-body">
                 <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
                 <p class="card-text">
+                <div>{{ event.jaka_gra|e }}</div>
                 <div>{{ event.login|e }}</div>
                 <div>{{ event.opis|e }}</div>
                 <div>{{ event.kiedy|e }}</div>
                 <div>{{ event.gdzie|e }}</div>
                 <div>{{ event.ile_miejsc|e }}</div>
-
                 <a href="#" class="btn btn-primary">Dołącz</a>
             </div>
             {% else %}
