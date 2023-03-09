@@ -28,9 +28,11 @@
 {% for event in events %}
 <div class="row">
     <div class="col-sm-12">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
             {% if event.type == "event" %}
-            <img src="data:image/jpg;base64,{{ event.photo }}" class="card-img-top" alt="">
+            <div style="width: 18rem;">
+                <img src="data:image/jpg;base64,{{ event.photo }}" class="card-img-top" alt="">
+            </div>
             <div class="card-body">
                 <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
                 <p class="card-text">
