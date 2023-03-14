@@ -14,7 +14,7 @@ def app():
     basedir = os.path.abspath(os.path.dirname(__file__))
     app.config.update({
         "TESTING": True,
-        "DB_URI": os.path.join(basedir, 'test.db'),
+        "DB_URI": os.path.join(basedir, 'test.sqlite'),
     })
 
     # other setup can go here
