@@ -38,7 +38,7 @@ def register():
             cur = conn.cursor()
             try:
                 cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
-                            'VALUES (%s, %s, %s, %s)',
+                            'VALUES (?, ?, ?, ?)',
                             (user,
                              password2,
                              email,

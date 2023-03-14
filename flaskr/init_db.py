@@ -1,13 +1,8 @@
 import os
-import psycopg2, hashlib
+import sqlite3, hashlib
 
-if __name__ == '__main__':
-    conn = psycopg2.connect(
-        host="localhost",
-        database="postgres",
-        user="postgres",
-        password="mysecretpassword")
 
+def init_db_for_connection(conn):
     h = '123'
     haslo = hashlib.sha256(h.encode('utf-8')).hexdigest()
     try:
@@ -15,7 +10,7 @@ if __name__ == '__main__':
 
         try:
             cur.execute('DROP TABLE IF EXISTS logowanie_uzytkownikow;')
-            cur.execute('CREATE TABLE logowanie_uzytkownikow (id serial PRIMARY KEY,'
+            cur.execute('CREATE TABLE logowanie_uzytkownikow (id INTEGER PRIMARY KEY,'
                         'login text NOT NULL UNIQUE,'
                         'haslo text NOT NULL,'
                         'email text NOT NULL UNIQUE,'
@@ -25,7 +20,7 @@ if __name__ == '__main__':
                         )
 
             cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
-                        'VALUES (%s, %s, %s, %s)',
+                        'VALUES (?, ?, ?, ?)',
                         ('maja',
                          haslo,
                          'majonezik93@gmail.com',
@@ -33,7 +28,7 @@ if __name__ == '__main__':
                         )
 
             cur.execute('DROP TABLE IF EXISTS wydarzenia;')
-            cur.execute('CREATE TABLE wydarzenia (id serial PRIMARY KEY,'
+            cur.execute('CREATE TABLE wydarzenia (id INTEGER PRIMARY KEY,'
                         'login text NOT NULL,'
                         'jaka_gra text NOT NULL,'
                         'opis text,'
@@ -43,7 +38,7 @@ if __name__ == '__main__':
                         'photo bytea);'
                         )
             cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc)'
-                        'VALUES (%s, %s, %s, %s, %s, %s)',
+                        'VALUES (?, ?, ?, ?, ?, ?)',
                         ('maja',
                          'Azul',
                          'Kafelkowa gra logiczna',
@@ -59,3 +54,12 @@ if __name__ == '__main__':
 
     finally:
         conn.close()
+
+
+def init_prod_db():
+    conn = sqlite3.connect("../database.sqlite")
+    init_db_for_connection(conn)
+
+
+if __name__ == '__main__':
+    init_prod_db()

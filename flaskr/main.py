@@ -14,8 +14,6 @@ from flaskr.db import get_db
 config = {
     "SECRET_KEY": 'dev'
 }
-app = Flask(__name__)
-app.config.from_mapping(config)
 
 bp = Blueprint('main', __name__)
 
@@ -180,7 +178,7 @@ def event():
     return render_template('main/event.html')
 
 
-@app.route('/upload_photo', methods=['POST'])
+@bp.route('/upload_photo', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -210,11 +208,16 @@ def upload_file():
                 return redirect(url_for("main.profil"))
         return redirect(url_for("main.profil"))
 
-if __name__ == '__main__':
-    db.init_app(app)
 
+def create_app():
+    app = Flask(__name__)
+    app.config.from_mapping(config)
     app.register_blueprint(auth.bp)
     app.register_blueprint(bp)
     app.add_url_rule('/', endpoint='main.profil')
+    db.init_app(app)
+    return app
 
+if __name__ == '__main__':
+    app = create_app()
     app.run()
