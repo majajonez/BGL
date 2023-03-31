@@ -6,6 +6,7 @@ import pytest
 from flaskr.db import get_db
 from flaskr.init_db import init_prod_db, init_db_for_connection
 from flaskr.main import create_app
+from tests.AuthFixture import AuthFixture
 
 
 @pytest.fixture()
@@ -34,3 +35,8 @@ def client(app):
 @pytest.fixture()
 def runner(app):
     return app.test_cli_runner()
+
+
+@pytest.fixture()
+def auth(client):
+    return AuthFixture(client)

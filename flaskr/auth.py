@@ -15,7 +15,10 @@ regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{
 def get_user(x):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE login = %(login)s', {"login": x})
+    # cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE login = %(login)s', {"login": x})
+    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = %s'''
+    login_value = x
+    cur.execute(sql_update_query, login_value)
     uzytkownik = cur.fetchall() #todo: fetchone
     cur.close()
     return uzytkownik
@@ -29,29 +32,29 @@ def register():
         email = args.get("email", None)
         city = args.get("city", None)
         error = None
-        if not re.fullmatch(regex, email):
+        if not email or not re.fullmatch(regex, email):
             error = "<i>Niepoprawny email</i>"
-
-        if user and password and email:
-            password2 = hashlib.sha256(password.encode('utf-8')).hexdigest()
-            conn = get_db()
-            cur = conn.cursor()
-            try:
-                cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
-                            'VALUES (?, ?, ?, ?)',
-                            (user,
-                             password2,
-                             email,
-                             city)
-                            )
-                conn.commit()
-                cur.close()
-            except:
-                error = "<i>ten login lub email jest już zajęty</i>"
-            else:
-                return redirect(url_for("auth.login"))
         else:
-            error = "<i> rejestracja sie nie udala</i>"
+            if user and password and email:
+                password2 = hashlib.sha256(password.encode('utf-8')).hexdigest()
+                conn = get_db()
+                cur = conn.cursor()
+                try:
+                    cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
+                                'VALUES (?, ?, ?, ?)',
+                                (user,
+                                 password2,
+                                 email,
+                                 city)
+                                )
+                    conn.commit()
+                    cur.close()
+                except:
+                    error = "<i>ten login lub email jest już zajęty</i>"
+                else:
+                    return redirect(url_for("auth.login"))
+            else:
+                error = "<i> rejestracja sie nie udala</i>"
 
         flash(error)
     return render_template('auth/register.html')
@@ -103,7 +106,10 @@ class User:
 def get_user_by_id(x):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE id = %(id)s', {"id": x})
+    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE id = %s'''
+    id_value = x
+    cur.execute(sql_update_query, id_value)
+    # cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE id = %(id)s', {"id": x})
     uzytkownik = cur.fetchone()
     cur.close()
     return User(uzytkownik)
