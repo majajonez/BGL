@@ -56,7 +56,8 @@ def get_events():
 def get_events_by_game(game):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM wydarzenia WHERE jaka_gra LIKE %(game)s', {"game": '%' + game + '%'})
+    sql_update_query = '''SELECT * FROM wydarzenia WHERE jaka_gra LIKE ?'''
+    cur.execute(sql_update_query, ['%' + game + '%'])
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
@@ -69,7 +70,8 @@ def get_events_by_game(game):
 def get_events_by_login(login):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE login LIKE %(login)s', {"login": '%' + login + '%'})
+    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login LIKE ?'''
+    cur.execute(sql_update_query, ['%' + login + '%'])
     profile = cur.fetchall()
     cur.close()
     profil_list = []
@@ -82,7 +84,8 @@ def get_events_by_login(login):
 def get_events_by_city(city):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM wydarzenia WHERE city LIKE %(city)s', {"city": '%' + city + '%'})
+    sql_update_query = '''SELECT * FROM wydarzenia WHERE city LIKE ?'''
+    cur.execute(sql_update_query, ['%' + city + '%'])
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
@@ -155,7 +158,7 @@ def event():
             cur = conn.cursor()
             try:
                 cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc, photo)'
-                            'VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                            'VALUES (?, ?, ?, ?, ?, ?, ?)',
                             (user,
                              title,
                              description,
