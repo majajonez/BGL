@@ -7,13 +7,7 @@ from flask import current_app
 
 def get_db():
     if 'db' not in g:
-        if current_app.config["TESTING"]:
-            g.db = sqlite3.connect(current_app.config['DB_URI'])
-        else:
-            g.db = psycopg2.connect(host='localhost',
-                                    database='postgres',
-                                    user="postgres",
-                                    password="mysecretpassword")
+        g.db = sqlite3.connect(current_app.config['DB_URI'])
     return g.db
 
 

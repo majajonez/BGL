@@ -16,9 +16,9 @@ def get_user(x):
     conn = get_db()
     cur = conn.cursor()
     # cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE login = %(login)s', {"login": x})
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = %s'''
+    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = ?'''
     login_value = x
-    cur.execute(sql_update_query, login_value)
+    cur.execute(sql_update_query, [ login_value ])
     uzytkownik = cur.fetchall() #todo: fetchone
     cur.close()
     return uzytkownik
@@ -106,9 +106,9 @@ class User:
 def get_user_by_id(x):
     conn = get_db()
     cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE id = %s'''
+    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE id = ?'''
     id_value = x
-    cur.execute(sql_update_query, id_value)
+    cur.execute(sql_update_query, [ id_value])
     # cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE id = %(id)s', {"id": x})
     uzytkownik = cur.fetchone()
     cur.close()

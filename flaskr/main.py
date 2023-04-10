@@ -1,4 +1,5 @@
 import base64
+import os
 from base64 import b64encode
 
 from flask import (
@@ -11,9 +12,6 @@ from flaskr import db, auth
 from flaskr.auth import login_required, load_logged_in_user, get_user_by_id
 from flaskr.db import get_db
 
-config = {
-    "SECRET_KEY": 'dev'
-}
 
 bp = Blueprint('main', __name__)
 
@@ -210,7 +208,11 @@ def upload_file():
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
+    config = {
+        "SECRET_KEY": 'dev',
+        'DB_URI': os.path.join(app.instance_path, 'flaskr.sqlite'),
+    }
     app.config.from_mapping(config)
     app.register_blueprint(auth.bp)
     app.register_blueprint(bp)

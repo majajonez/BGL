@@ -57,7 +57,7 @@ def init_db_for_connection(conn):
 
 
 def init_prod_db():
-    conn = sqlite3.connect("../database.sqlite")
+    conn = sqlite3.connect("../instance/flaskr.sqlite")
     init_db_for_connection(conn)
 
 

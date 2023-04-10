@@ -26,14 +26,21 @@ def test_register_page_should_load(client, app):
 #         "SELECT * FROM logowanie_uzytkownikow LIMIT 1",
 #     ).fetchone() is not None
 
-def test_register_should_pass(client, app):
+def test_register_with_valid_email_and_password_should_pass(client, app):
     response = client.post(
         '/auth/register', data={'user': 'tester', 'email': 'tester@gmail.com', 'password': 'tester', 'city': 'tester'}
     )
-    assert client.post(
-        '/auth/login', data={'user': 'tester', 'password': 'tester'}
+    assert response.status_code == 302
+
+
+def test_login_should_pass_after_correct_registration(client, app):
+    response = client.post(
+        '/auth/register', data={'user': 'tester', 'email': 'tester@gmail.com', 'password': 'tester', 'city': 'tester'}
     )
-    assert response.status_code == 200
+    assert response.status_code == 302
+    response = client.post('/auth/login', data={'user': 'tester', 'password': 'tester'})
+    assert response.status_code == 302
+
 
 def test_register_with_wrong_email_should_fail(auth):
     response = auth.register_raw(data={'email': 'a', 'password': 'a'})
@@ -55,13 +62,11 @@ def test_register_without_email_should_fail(auth):
 def test_register_the_same_login_twice_should_fail(auth):
     auth.register_raw(data={'user': 'lucek', 'email': 'lucek@gmail.com', 'password': 'a'})
     response = auth.register_raw(data={'user': 'lucek', 'email': 'lucek2@gmail.com', 'password': 'a'})
-    print(response.get_data(as_text=True))
     assert (re.search('ten login lub email jest już zajęty', response.get_data(as_text=True)))
 
 def test_register_the_same_email_twice_should_fail(auth):
     auth.register_raw(data={'user': 'lucek', 'email': 'lucek@gmail.com', 'password': 'a'})
     response = auth.register_raw(data={'user': 'lucek2', 'email': 'lucek@gmail.com', 'password': 'a'})
-    print(response.get_data(as_text=True))
     assert (re.search('ten login lub email jest już zajęty', response.get_data(as_text=True)))
 
 
