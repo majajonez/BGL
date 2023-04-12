@@ -9,7 +9,7 @@ from flask import Flask
 from werkzeug.utils import secure_filename
 
 from flaskr import db, auth
-from flaskr.auth import login_required, load_logged_in_user, get_user_by_id
+from flaskr.auth import login_required, load_logged_in_user, get_user_by_id, User
 from flaskr.db import get_db
 
 
@@ -37,6 +37,14 @@ class Person:
         self.opis = profil[5]
         self.type = "person"
 
+def get_user_by_login(login):
+    conn = get_db()
+    cur = conn.cursor()
+    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = ?'''
+    cur.execute(sql_update_query, [login])
+    uzytkownik = cur.fetchone()
+    cur.close()
+    return User(uzytkownik)
 
 def get_events():
     conn = get_db()
@@ -174,6 +182,11 @@ def event():
 def event_details(id):
     event = get_events_by_id(id)
     return render_template('main/event_details.html', event=event)
+
+@bp.route('/profile_viev/<login>', methods=['GET'])
+def profile_viev(login):
+    user = get_user_by_login(login)
+    return render_template('main/profile_viev.html', user=user)
 
 
 @bp.route('/upload_photo', methods=['POST'])
