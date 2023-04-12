@@ -26,7 +26,6 @@ class Event:
         self.gdzie = wydarzenie[5]
         self.ile_miejsc = wydarzenie[6]
         self.type = "event"
-        print(wydarzenie[7])
         if wydarzenie[7]:
             self.photo = base64.b64encode(wydarzenie[7]).decode('ascii')
             print(self.photo)
@@ -95,26 +94,20 @@ def get_events_by_city(city):
         event_list.append(event)
     return event_list
 
+def get_events_by_id(id):
+    conn = get_db()
+    cur = conn.cursor()
+    sql_update_query = '''SELECT * FROM wydarzenia WHERE id = ?'''
+    cur.execute(sql_update_query, [id])
+    wydarzenie = cur.fetchone()
+    cur.close()
+    return Event(wydarzenie)
 
-@bp.route('/profil', methods=['GET', 'POST'])
+
+@bp.route('/profil', methods=['GET'])
 @login_required
 def profil():
-    if request.method == "POST":
-        args = request.form
-        photo = args.get("photo", None)
-        conn = get_db()
-        cur = conn.cursor()
-        try:
-            cur.execute('INSERT INTO logowanie_uzytkownikow (photo)'
-                        'VALUES (%s)',
-                        (photo)
-                        )
-            conn.commit()
-            cur.close()
-        except:
-            error = "<i>nie udało się przesłać zdjęcia</i>"
-        else:
-            return render_template('main/profil.html')
+
     return render_template('main/profil.html')
 
 
@@ -171,12 +164,16 @@ def event():
                 cur.close()
                 return redirect(url_for('main.main_page'))
             except Exception as e:
-                print(e)
                 error = "Nie udało się utworzyć wydarzenia"
         else:
             error = "Brakuje informacji"
         flash(error)
     return render_template('main/event.html')
+
+@bp.route('/event_details/<id>', methods=['GET', 'POST'])
+def event_details(id):
+    event = get_events_by_id(id)
+    return render_template('main/event_details.html', event=event)
 
 
 @bp.route('/upload_photo', methods=['POST'])
@@ -185,20 +182,18 @@ def upload_file():
         # check if the post request has the file part
         if 'uploaded-file' not in request.files:
             flash('No file part')
-            print("aaa")
             return redirect('profil')
         file = request.files['uploaded-file']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
             flash('No selected file')
-            print("bbb")
             return redirect('profil')
         if file:
             conn = get_db()
             cur = conn.cursor()
             try:
-                cur.execute('UPDATE logowanie_uzytkownikow SET photo=%s WHERE id = %s',
+                cur.execute('UPDATE logowanie_uzytkownikow SET photo=? WHERE id = ?',
                             (file.stream.read(), g.user.id)
                             )
                 conn.commit()

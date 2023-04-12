@@ -43,6 +43,7 @@
                 <div>{{ event.gdzie|e }}</div>
                 <div>{{ event.ile_miejsc|e }}</div>
                 <a href="#" class="btn btn-primary">Dołącz</a>
+                <a href="event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
             </div>
             {% else %}
             <div class="card-body">

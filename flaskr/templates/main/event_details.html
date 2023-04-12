@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <h5>{{ event.jaka_gra|e }}</h5>
+        <div>{{ event.jaka_gra|e }}</div>
+        <div>{{ event.login|e }}</div>
+        <div>{{ event.opis|e }}</div>
+        <div>{{ event.kiedy|e }}</div>
+        <div>{{ event.gdzie|e }}</div>
+        <div>{{ event.ile_miejsc|e }}</div>
+        <a href="#" class="btn btn-primary">Dołącz</a>
+    </div>
+
+{% endblock %}
