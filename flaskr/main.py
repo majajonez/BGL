@@ -19,7 +19,9 @@ bp = Blueprint('main', __name__)
 class Event:
     def __init__(self, wydarzenie):
         self.id = wydarzenie[0]
-        self.login = wydarzenie[1]
+        self.user_id = wydarzenie[1]
+        user = get_user_by_id(wydarzenie[1])
+        self.login = user.login
         self.jaka_gra = wydarzenie[2]
         self.opis = wydarzenie[3]
         self.kiedy = wydarzenie[4]
@@ -146,7 +148,8 @@ def main_page():
 def event():
     if request.method == 'POST':
         args = request.form
-        user = args.get("user", None)
+        user_id = session.get('user_id')
+        print(user_id)
         title = args.get("title", None)
         description = args.get("description", None)
         when = args.get("when", None)
@@ -154,13 +157,13 @@ def event():
         the_number_of_seats = args.get("the_number_of_seats", None)
         photo = request.files['uploaded-file']
         error = None
-        if user and title and description and when and where and the_number_of_seats:
+        if user_id and title and description and when and where and the_number_of_seats:
             conn = get_db()
             cur = conn.cursor()
             try:
-                cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc, photo)'
+                cur.execute('INSERT INTO wydarzenia (user_id, jaka_gra, opis, kiedy, gdzie, ile_miejsc, photo)'
                             'VALUES (?, ?, ?, ?, ?, ?, ?)',
-                            (user,
+                            (user_id,
                              title,
                              description,
                              when,
@@ -234,3 +237,8 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     app.run()
+
+
+
+#                 <div><a href="profile_viev/{{ event.login }}" class="btn btn-link">{{ event.login|e }}</a></div>
+#

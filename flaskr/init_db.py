@@ -29,7 +29,7 @@ def init_db_for_connection(conn):
 
             cur.execute('DROP TABLE IF EXISTS wydarzenia;')
             cur.execute('CREATE TABLE wydarzenia (id INTEGER PRIMARY KEY,'
-                        'login text NOT NULL,'
+                        'user_id text NOT NULL,'
                         'jaka_gra text NOT NULL,'
                         'opis text,'
                         'kiedy text NOT NULL,'
@@ -37,9 +37,9 @@ def init_db_for_connection(conn):
                         'ile_miejsc smallint,'
                         'photo bytea);'
                         )
-            cur.execute('INSERT INTO wydarzenia (login, jaka_gra, opis, kiedy, gdzie, ile_miejsc)'
+            cur.execute('INSERT INTO wydarzenia (user_id, jaka_gra, opis, kiedy, gdzie, ile_miejsc)'
                         'VALUES (?, ?, ?, ?, ?, ?)',
-                        ('maja',
+                        ('1',
                          'Azul',
                          'Kafelkowa gra logiczna',
                          '01.01.2023',

@@ -15,7 +15,6 @@ regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{
 def get_user(x):
     conn = get_db()
     cur = conn.cursor()
-    # cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE login = %(login)s', {"login": x})
     sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = ?'''
     login_value = x
     cur.execute(sql_update_query, [ login_value ])
@@ -109,7 +108,6 @@ def get_user_by_id(x):
     sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE id = ?'''
     id_value = x
     cur.execute(sql_update_query, [ id_value])
-    # cur.execute('SELECT * FROM logowanie_uzytkownikow WHERE id = %(id)s', {"id": x})
     uzytkownik = cur.fetchone()
     cur.close()
     return User(uzytkownik)
