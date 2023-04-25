@@ -12,7 +12,6 @@ from flaskr import db, auth
 from flaskr.auth import login_required, load_logged_in_user, get_user_by_id, User
 from flaskr.db import get_db
 
-
 bp = Blueprint('main', __name__)
 
 
@@ -20,8 +19,8 @@ class Event:
     def __init__(self, wydarzenie):
         self.id = wydarzenie[0]
         self.user_id = wydarzenie[1]
-        user = get_user_by_id(wydarzenie[1])
-        self.login = user.login
+        # user = get_user_by_id(wydarzenie[1])
+        self.login = "todo napraw mnie"
         self.jaka_gra = wydarzenie[2]
         self.opis = wydarzenie[3]
         self.kiedy = wydarzenie[4]
@@ -31,6 +30,8 @@ class Event:
         if wydarzenie[7]:
             self.photo = base64.b64encode(wydarzenie[7]).decode('ascii')
             print(self.photo)
+        self.can_join = bool(wydarzenie[8])
+
 
 class Person:
     def __init__(self, profil):
@@ -38,6 +39,7 @@ class Person:
         self.city = profil[4]
         self.opis = profil[5]
         self.type = "person"
+
 
 def get_user_by_login(login):
     conn = get_db()
@@ -48,10 +50,12 @@ def get_user_by_login(login):
     cur.close()
     return User(uzytkownik)
 
+
 def get_events():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM wydarzenia')
+    cur.execute('SELECT w.*, uw.user_id is null as can_join FROM wydarzenia w'
+                        ' LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id')
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
@@ -76,6 +80,7 @@ def get_events_by_game(game):
         event_list.append(event)
     return event_list
 
+
 def get_events_by_login(login):
     conn = get_db()
     cur = conn.cursor()
@@ -89,6 +94,7 @@ def get_events_by_login(login):
         person = Person(p)
         profil_list.append(person)
     return profil_list
+
 
 def get_events_by_city(city):
     conn = get_db()
@@ -104,11 +110,14 @@ def get_events_by_city(city):
         event_list.append(event)
     return event_list
 
-def get_events_by_id(id):
+
+def get_events_by_id(id, user_id):
     conn = get_db()
     cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM wydarzenia WHERE id = ?'''
-    cur.execute(sql_update_query, [id])
+    sql_update_query = ('SELECT w.*, uw.user_id is null as can_join FROM wydarzenia w'
+                        ' LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id'
+                        ' WHERE w.id = ? AND uw.user_id = ?')
+    cur.execute(sql_update_query, [id, user_id])
     wydarzenie = cur.fetchone()
     cur.close()
     return Event(wydarzenie)
@@ -117,7 +126,6 @@ def get_events_by_id(id):
 @bp.route('/profil', methods=['GET'])
 @login_required
 def profil():
-
     return render_template('main/profil.html')
 
 
@@ -181,10 +189,27 @@ def event():
         flash(error)
     return render_template('main/event.html')
 
+
 @bp.route('/event_details/<id>', methods=['GET', 'POST'])
 def event_details(id):
-    event = get_events_by_id(id)
+    event = get_events_by_id(id, g.user.id)
     return render_template('main/event_details.html', event=event)
+
+
+@bp.route('/event/<id>/join', methods=['POST'])
+def join_event(id):
+    user_id = session.get('user_id')
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO uczestnicy_wydarzen (user_id, event_id)'
+                'VALUES (?, ?)',
+                (id, user_id)
+                )
+    conn.commit()
+    cur.close()
+    conn.close()
+    return render_template("main/main_page.html")
+
 
 @bp.route('/profile_viev/<login>', methods=['GET'])
 def profile_viev(login):
@@ -234,11 +259,7 @@ def create_app():
     db.init_app(app)
     return app
 
+
 if __name__ == '__main__':
     app = create_app()
     app.run()
-
-
-
-#                 <div><a href="profile_viev/{{ event.login }}" class="btn btn-link">{{ event.login|e }}</a></div>
-#

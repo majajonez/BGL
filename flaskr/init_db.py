@@ -29,11 +29,11 @@ def init_db_for_connection(conn):
 
             cur.execute('DROP TABLE IF EXISTS wydarzenia;')
             cur.execute('CREATE TABLE wydarzenia (id INTEGER PRIMARY KEY,'
-                        'user_id text NOT NULL,'
+                        'user_id text NOT NULL,' #todo zmienic na integer
                         'jaka_gra text NOT NULL,'
                         'opis text,'
                         'kiedy text NOT NULL,'
-                        'gdzie text NOT NULL,'
+                        'gdzie` text NOT NULL,'
                         'ile_miejsc smallint,'
                         'photo bytea);'
                         )
@@ -45,6 +45,10 @@ def init_db_for_connection(conn):
                          '01.01.2023',
                          'Warszawa',
                          4)
+                        )
+            cur.execute('DROP TABLE IF EXISTS uczestnicy_wydarzen;')
+            cur.execute('CREATE TABLE uczestnicy_wydarzen (user_id integer NOT NULL, '
+                        'event_id integer NOT NULL);'
                         )
 
             conn.commit()

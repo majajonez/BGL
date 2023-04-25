@@ -42,7 +42,13 @@
                 <div>{{ event.kiedy|e }}</div>
                 <div>{{ event.gdzie|e }}</div>
                 <div>{{ event.ile_miejsc|e }}</div>
-                <a href="#" class="btn btn-primary">Dołącz</a>
+                <form method="post" action="/event/{{ event.id }}/join">
+                     {% if event.can_join %}
+                        <button class="btn btn-primary" type="submit">Dołącz</button>
+                    {% else %}
+                        <button class="btn btn-primary" type="submit" disabled data-bs-toggle="button">Dołączono</button>
+                    {% endif %}
+                </form>
                 <a href="event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
             </div>
             {% else %}
