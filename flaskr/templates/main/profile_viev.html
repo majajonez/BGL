@@ -18,6 +18,42 @@
     </ul>
 </div>
 
+{% for event in events %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            {% if event.type == "event" %}
+            <div style="width: 18rem;">
+                <img src="data:image/jpg;base64,{{ event.photo }}" class="card-img-top" alt="">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
+                <p class="card-text">
+                <div>{{ event.jaka_gra|e }}</div>
+                <div><a href="profile_viev/{{ event.login }}" class="btn btn-link">{{ event.login|e }}</a></div>
+                <div>{{ event.opis|e }}</div>
+                <div>{{ event.kiedy|e }}</div>
+                <div>{{ event.gdzie|e }}</div>
+                <div>{{ event.ile_miejsc|e }}</div>
+                <form method="post" action="/event/{{ event.id }}/join">
+                    {% if event.can_join %}
+                    <button class="btn btn-primary" type="submit">Dołącz</button>
+                    {% else %}
+                    <button class="btn btn-primary" type="submit" disabled data-bs-toggle="button">Dołączono</button>
+                    {% endif %}
+                </form>
+                <a href="event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
+            </div>
+            {% else %}
+            <div class="card-body">
 
+                <p class="card-text">
+                <div>{{ event.city|e }}</div>
+                <div>{{ event.opis|e }}</div>
 
-{% endblock %}}
+            </div>
+            {% endif %}
+        </div>
+{% endfor %}
+
+{% endblock %}

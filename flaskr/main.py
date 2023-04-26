@@ -19,8 +19,6 @@ class Event:
     def __init__(self, wydarzenie):
         self.id = wydarzenie[0]
         self.user_id = wydarzenie[1]
-        # user = get_user_by_id(wydarzenie[1])
-        self.login = "todo napraw mnie"
         self.jaka_gra = wydarzenie[2]
         self.opis = wydarzenie[3]
         self.kiedy = wydarzenie[4]
@@ -31,6 +29,7 @@ class Event:
             self.photo = base64.b64encode(wydarzenie[7]).decode('ascii')
             print(self.photo)
         self.can_join = bool(wydarzenie[8])
+        self.login = wydarzenie[9]
 
 
 class Person:
@@ -54,8 +53,9 @@ def get_user_by_login(login):
 def get_events():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT w.*, uw.user_id is null as can_join FROM wydarzenia w'
-                        ' LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id')
+    cur.execute('SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w'
+                ' LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id'
+                ' LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id')
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
@@ -114,8 +114,9 @@ def get_events_by_city(city):
 def get_events_by_id(id, user_id):
     conn = get_db()
     cur = conn.cursor()
-    sql_update_query = ('SELECT w.*, uw.user_id is null as can_join FROM wydarzenia w'
+    sql_update_query = ('SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w'
                         ' LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id'
+                        ' LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id'
                         ' WHERE w.id = ? AND uw.user_id = ?')
     cur.execute(sql_update_query, [id, user_id])
     wydarzenie = cur.fetchone()
@@ -214,7 +215,15 @@ def join_event(id):
 @bp.route('/profile_viev/<login>', methods=['GET'])
 def profile_viev(login):
     user = get_user_by_login(login)
-    return render_template('main/profile_viev.html', user=user)
+    conn = get_db()
+    cur = conn.cursor()
+    events = ('SELECT w.*, lu.login FROM wydarzenia w'
+              ' LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id'
+              ' WHERE lu.login = ?')
+    cur.execute(events, [login])
+    events = cur.fetchall()
+    cur.close()
+    return render_template('main/profile_viev.html', user=user, events=events)
 
 
 @bp.route('/upload_photo', methods=['POST'])
