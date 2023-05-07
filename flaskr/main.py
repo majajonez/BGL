@@ -50,12 +50,12 @@ def get_user_by_login(login):
     return User(uzytkownik)
 
 
-def get_events():
+def get_events(user_id):
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w'
-                ' LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id'
-                ' LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id')
+    cur.execute('''SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w
+                LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id and uw.user_id = ?
+                LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id''', [user_id])
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
@@ -149,7 +149,8 @@ def search():
 
 @bp.route('/main_page', methods=['GET', 'POST'])
 def main_page():
-    events = get_events()
+    user_id = session.get('user_id')
+    events = get_events(user_id)
     return render_template('main/main_page.html', events=events)
 
 
@@ -204,7 +205,7 @@ def join_event(id):
     cur = conn.cursor()
     cur.execute('INSERT INTO uczestnicy_wydarzen (user_id, event_id)'
                 'VALUES (?, ?)',
-                (id, user_id)
+                (user_id, id)
                 )
     conn.commit()
     cur.close()
