@@ -216,14 +216,8 @@ def join_event(id):
 @bp.route('/profile_viev/<login>', methods=['GET'])
 def profile_viev(login):
     user = get_user_by_login(login)
-    conn = get_db()
-    cur = conn.cursor()
-    events = ('SELECT w.*, lu.login FROM wydarzenia w'
-              ' LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id'
-              ' WHERE lu.login = ?')
-    cur.execute(events, [login])
-    events = cur.fetchall()
-    cur.close()
+    user_id = user.id
+    events = get_events(user_id)
     return render_template('main/profile_viev.html', user=user, events=events)
 
 
