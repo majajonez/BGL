@@ -3,7 +3,9 @@ from flask import (
 )
 
 from flaskr.auth import login_required
-from flaskr.repository import *
+from flaskr.repository.event import *
+from flaskr.repository.profile import *
+from flaskr.repository.user import *
 
 bp = Blueprint('main', __name__)
 
@@ -20,7 +22,7 @@ def search():
     fraza = args.get("fraza", None)
     radio = args.get("btnradio", None)
     if radio == "login":
-        events = get_events_by_login(fraza)
+        events = get_profiles_by_login(fraza) #todo: rename
     elif radio == "gra":
         events = get_events_by_game(fraza)
     elif radio == "city":

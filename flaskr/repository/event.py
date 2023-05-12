@@ -18,57 +18,6 @@ class Event:
         self.login = wydarzenie[9]
 
 
-class Person:
-    def __init__(self, profil):
-        self.login = profil[1]
-        self.city = profil[4]
-        self.opis = profil[5]
-        self.type = "person"
-
-
-class User:
-    def __init__(self, user):
-        self.id = user[0]
-        self.login = user[1]
-        self.haslo = user[2]
-        self.email = user[3]
-        self.city = user[4]
-        self.opis = user[5]
-        if user[6]:
-            self.photo = base64.b64encode(user[6]).decode('ascii')
-
-
-def get_user_by_id(x):
-    conn = get_db()
-    cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE id = ?'''
-    id_value = x
-    cur.execute(sql_update_query, [ id_value])
-    uzytkownik = cur.fetchone()
-    cur.close()
-    return User(uzytkownik)
-
-
-def get_user(x):
-    conn = get_db()
-    cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = ?'''
-    login_value = x
-    cur.execute(sql_update_query, [ login_value ])
-    uzytkownik = cur.fetchall() #todo: fetchone
-    cur.close()
-    return uzytkownik
-
-
-def get_user_by_login(login):
-    conn = get_db()
-    cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = ?'''
-    cur.execute(sql_update_query, [login])
-    uzytkownik = cur.fetchone()
-    cur.close()
-    return User(uzytkownik)
-
 
 def get_events(user_id):
     conn = get_db()
@@ -101,19 +50,7 @@ def get_events_by_game(game):
     return event_list
 
 
-def get_events_by_login(login):
-    conn = get_db()
-    cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login LIKE ?'''
-    cur.execute(sql_update_query, ['%' + login + '%'])
-    profile = cur.fetchall()
-    cur.close()
-    profil_list = []
 
-    for p in profile:
-        person = Person(p)
-        profil_list.append(person)
-    return profil_list
 
 
 def get_events_by_city(city):

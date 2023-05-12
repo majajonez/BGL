@@ -6,7 +6,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from flaskr.db import get_db
-from flaskr.repository import get_user, get_user_by_id
+from flaskr.repository.user import get_user, get_user_by_id
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
