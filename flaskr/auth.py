@@ -1,26 +1,17 @@
-import base64
-import functools, re, hashlib
+import functools
+import hashlib
+import re
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, make_response
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from werkzeug.security import check_password_hash, generate_password_hash
-
 from flaskr.db import get_db
+from flaskr.repository import get_user, get_user_by_id
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
-def get_user(x):
-    conn = get_db()
-    cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = ?'''
-    login_value = x
-    cur.execute(sql_update_query, [ login_value ])
-    uzytkownik = cur.fetchall() #todo: fetchone
-    cur.close()
-    return uzytkownik
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -30,7 +21,6 @@ def register():
         password = args.get("password", None)
         email = args.get("email", None)
         city = args.get("city", None)
-        error = None
         if not email or not re.fullmatch(regex, email):
             error = "<i>Niepoprawny email</i>"
         else:
@@ -64,13 +54,12 @@ def login():
     if request.method == 'POST':
         args = request.form
         uzytkownik = get_user(args.get("user", ""))
-        error = None
         if uzytkownik:
             password = args.get("password", "")
             password2 = hashlib.sha256(password.encode('utf-8')).hexdigest()
             if password2 == uzytkownik[0][2]:
                 session.clear()
-                session['user_id'] = uzytkownik[0][0] #todo: uzyc nazwy kolumny
+                session['user_id'] = uzytkownik[0][0]  # todo: uzyc nazwy kolumny
                 return redirect(url_for('main.main_page'))
             else:
                 error = 'Incorrect password.'
@@ -90,32 +79,11 @@ def load_logged_in_user():
         g.user = get_user_by_id(user_id)
 
 
-class User:
-    def __init__(self, user):
-        self.id = user[0]
-        self.login = user[1]
-        self.haslo = user[2]
-        self.email = user[3]
-        self.city = user[4]
-        self.opis = user[5]
-        if user[6]:
-            self.photo = base64.b64encode(user[6]).decode('ascii')
-
-
-def get_user_by_id(x):
-    conn = get_db()
-    cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE id = ?'''
-    id_value = x
-    cur.execute(sql_update_query, [ id_value])
-    uzytkownik = cur.fetchone()
-    cur.close()
-    return User(uzytkownik)
-
 @bp.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('auth.login'))
+
 
 def login_required(view):
     @functools.wraps(view)
