@@ -1,15 +1,13 @@
 import base64
 import os
-from base64 import b64encode
 
 from flask import (
     Blueprint, render_template, request, redirect, url_for, flash, session, g
 )
 from flask import Flask
-from werkzeug.utils import secure_filename
 
 from flaskr import db, auth
-from flaskr.auth import login_required, load_logged_in_user, get_user_by_id, User
+from flaskr.auth import login_required, User
 from flaskr.db import get_db
 
 bp = Blueprint('main', __name__)
@@ -135,7 +133,6 @@ def search():
     args = request.form
     fraza = args.get("fraza", None)
     radio = args.get("btnradio", None)
-    events = []
     if radio == "login":
         events = get_events_by_login(fraza)
     elif radio == "gra":
@@ -159,14 +156,12 @@ def event():
     if request.method == 'POST':
         args = request.form
         user_id = session.get('user_id')
-        print(user_id)
         title = args.get("title", None)
         description = args.get("description", None)
         when = args.get("when", None)
         where = args.get("where", None)
         the_number_of_seats = args.get("the_number_of_seats", None)
         photo = request.files['uploaded-file']
-        error = None
         if user_id and title and description and when and where and the_number_of_seats:
             conn = get_db()
             cur = conn.cursor()
@@ -245,6 +240,7 @@ def upload_file():
                 cur.close()
             except:
                 error = "<i>zdjęcie nie zostało zapisane</i>"
+                flash(error)
             else:
                 return redirect(url_for("main.profil"))
         return redirect(url_for("main.profil"))
