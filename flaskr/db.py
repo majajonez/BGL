@@ -1,8 +1,7 @@
 import sqlite3
 
-import psycopg2, re, hashlib
-from flask import current_app, g
 from flask import current_app
+from flask import g
 
 
 def get_db():
