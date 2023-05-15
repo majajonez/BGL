@@ -6,7 +6,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from flaskr.db import get_db
-from flaskr.repository.user import get_user, get_user_by_id
+from flaskr.repository.user import get_user, get_user_by_id, create_user
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -26,18 +26,8 @@ def register():
         else:
             if user and password and email:
                 password2 = hashlib.sha256(password.encode('utf-8')).hexdigest()
-                conn = get_db()
-                cur = conn.cursor()
                 try:
-                    cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
-                                'VALUES (?, ?, ?, ?)',
-                                (user,
-                                 password2,
-                                 email,
-                                 city)
-                                )
-                    conn.commit()
-                    cur.close()
+                    create_user(user, password2, email, city)
                 except:
                     error = "<i>ten login lub email jest już zajęty</i>"
                 else:

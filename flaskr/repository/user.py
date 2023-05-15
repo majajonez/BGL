@@ -44,3 +44,17 @@ def get_user_by_login(login):
     uzytkownik = cur.fetchone()
     cur.close()
     return User(uzytkownik)
+
+
+def create_user(user, password2, email, city):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO logowanie_uzytkownikow (login, haslo, email, city)'
+                'VALUES (?, ?, ?, ?)',
+                (user,
+                 password2,
+                 email,
+                 city)
+                )
+    conn.commit()
+    cur.close()

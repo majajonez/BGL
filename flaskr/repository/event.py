@@ -79,3 +79,33 @@ def get_events_by_id(id, user_id):
     wydarzenie = cur.fetchone()
     cur.close()
     return Event(wydarzenie)
+
+
+def create_event(user_id, title, description, when, where, the_number_of_seats, photo):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO wydarzenia (user_id, jaka_gra, opis, kiedy, gdzie, ile_miejsc, photo)'
+                'VALUES (?, ?, ?, ?, ?, ?, ?)',
+                (user_id,
+                 title,
+                 description,
+                 when,
+                 where,
+                 the_number_of_seats,
+                 photo.stream.read())
+                )
+    conn.commit()
+    cur.close()
+
+
+
+def join_event_db(user_id, id):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO uczestnicy_wydarzen (user_id, event_id)'
+                'VALUES (?, ?)',
+                (user_id, id)
+                )
+    conn.commit()
+    cur.close()
+    conn.close()

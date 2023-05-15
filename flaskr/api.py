@@ -51,21 +51,8 @@ def event():
         the_number_of_seats = args.get("the_number_of_seats", None)
         photo = request.files['uploaded-file']
         if user_id and title and description and when and where and the_number_of_seats:
-            conn = get_db()
-            cur = conn.cursor()
             try:
-                cur.execute('INSERT INTO wydarzenia (user_id, jaka_gra, opis, kiedy, gdzie, ile_miejsc, photo)'
-                            'VALUES (?, ?, ?, ?, ?, ?, ?)',
-                            (user_id,
-                             title,
-                             description,
-                             when,
-                             where,
-                             the_number_of_seats,
-                             photo.stream.read())
-                            )
-                conn.commit()
-                cur.close()
+                create_event(user_id, title, description, when, where, the_number_of_seats, photo)
                 return redirect(url_for('main.main_page'))
             except:
                 error = "Nie udało się utworzyć wydarzenia"
@@ -84,15 +71,7 @@ def event_details(id):
 @bp.route('/event/<id>/join', methods=['POST'])
 def join_event(id):
     user_id = session.get('user_id')
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute('INSERT INTO uczestnicy_wydarzen (user_id, event_id)'
-                'VALUES (?, ?)',
-                (user_id, id)
-                )
-    conn.commit()
-    cur.close()
-    conn.close()
+    join_event_db(user_id, id)
     return render_template("main/main_page.html")
 
 
@@ -118,14 +97,8 @@ def upload_file():
             flash('No selected file')
             return redirect('profil')
         if file:
-            conn = get_db()
-            cur = conn.cursor()
             try:
-                cur.execute('UPDATE logowanie_uzytkownikow SET photo=? WHERE id = ?',
-                            (file.stream.read(), g.user.id)
-                            )
-                conn.commit()
-                cur.close()
+                update_profile(file, g)
             except:
                 error = "<i>zdjęcie nie zostało zapisane</i>"
                 flash(error)
