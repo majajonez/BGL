@@ -25,12 +25,3 @@ driver.close()
 
 
 
-
-
-# duck.click()
-# print(duck.get_attribute('outerHTML'))
-#
-# try:
-#     duck = driver.find_element_by_id('logo_homepage_link')
-# except NoSuchElementException:
-#     print('Nie ma takiego elementu')
