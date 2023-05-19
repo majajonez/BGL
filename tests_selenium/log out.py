@@ -19,18 +19,11 @@ password_input.send_keys('123')
 button = driver.find_element(by=By.XPATH, value="//input[@type='submit']")
 button.click()
 
+sleep(2)
+
+button_2 = driver.find_element(by=By.XPATH, value="//a[@href='/auth/logout']")
+button_2.click()
+
 sleep(5)
 
 driver.close()
-
-
-
-
-
-# duck.click()
-# print(duck.get_attribute('outerHTML'))
-#
-# try:
-#     duck = driver.find_element_by_id('logo_homepage_link')
-# except NoSuchElementException:
-#     print('Nie ma takiego elementu')
