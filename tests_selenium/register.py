@@ -2,6 +2,7 @@ from time import sleep
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from tests_selenium.fake_data import Random_user
 
 path = 'C:\\Users\\kasper\\PycharmProjects\BGL\\tests_selenium\\chromedriver.exe'
 driver = webdriver.Chrome(executable_path=path)
@@ -15,10 +16,12 @@ password_input = driver.find_element(by=By.ID, value='password')
 email_input = driver.find_element(by=By.ID, value='email')
 city_input = driver.find_element(by=By.ID, value='city')
 
-login_input.send_keys('kasper')
-password_input.send_keys('qwe')
-email_input.send_keys('kasper@gmail.com')
-city_input.send_keys('warszawa')
+user = Random_user()
+
+login_input.send_keys(user.name)
+password_input.send_keys(user.password)
+email_input.send_keys(user.email)
+city_input.send_keys(user.city)
 
 button = driver.find_element(by=By.XPATH, value="//input[@type='submit']")
 button.click()
@@ -26,8 +29,8 @@ button.click()
 login_input_2 = driver.find_element(by=By.ID, value='username')
 password_input_2 = driver.find_element(by=By.ID, value='password')
 
-login_input_2.send_keys('maja')
-password_input_2.send_keys('123')
+login_input_2.send_keys(user.name)
+password_input_2.send_keys(user.password)
 
 button = driver.find_element(by=By.XPATH, value="//input[@type='submit']")
 button.click()
