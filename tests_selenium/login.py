@@ -19,7 +19,7 @@ password_input.send_keys('123')
 button = driver.find_element(by=By.XPATH, value="//input[@type='submit']")
 button.click()
 
-sleep(5)
+sleep(3)
 
 driver.close()
 

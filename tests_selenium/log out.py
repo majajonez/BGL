@@ -24,6 +24,6 @@ sleep(2)
 button_2 = driver.find_element(by=By.XPATH, value="//a[@href='/auth/logout']")
 button_2.click()
 
-sleep(5)
+sleep(3)
 
 driver.close()
