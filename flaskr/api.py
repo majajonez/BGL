@@ -75,6 +75,13 @@ def join_event(id):
     return render_template("main/main_page.html")
 
 
+@bp.route('/my_events/', methods=['GET'])
+def my_events():
+    user_id = session.get('user_id')
+    events = get_events_by_user_id(user_id)
+    return render_template('main/my_events.html', events=events)
+
+
 @bp.route('/profile_viev/<login>', methods=['GET'])
 def profile_viev(login):
     user = get_user_by_login(login)
