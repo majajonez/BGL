@@ -35,11 +35,14 @@ def get_events(user_id):
     return event_list
 
 
-def get_events_by_game(game):
+def get_events_by_game(user_id, game):
     conn = get_db()
     cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM wydarzenia WHERE jaka_gra LIKE ?'''
-    cur.execute(sql_update_query, ['%' + game + '%'])
+    sql_update_query = '''SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w
+                LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id and uw.user_id = ?
+                LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id 
+                WHERE w.jaka_gra LIKE ?'''
+    cur.execute(sql_update_query, [user_id, '%' + game + '%'])
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
@@ -69,11 +72,14 @@ def get_events_by_user_id(user_id):
 
 
 
-def get_events_by_city(city):
+def get_events_by_city(user_id, city):
     conn = get_db()
     cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM wydarzenia WHERE city LIKE ?'''
-    cur.execute(sql_update_query, ['%' + city + '%'])
+    sql_update_query = '''SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w
+                LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id and uw.user_id = ?
+                LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id 
+                WHERE w.gdzie LIKE ?'''
+    cur.execute(sql_update_query, [user_id, '%' + city + '%'])
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []

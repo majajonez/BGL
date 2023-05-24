@@ -21,12 +21,13 @@ def search():
     args = request.form
     fraza = args.get("fraza", None)
     radio = args.get("btnradio", None)
+    user_id = session.get('user_id')
     if radio == "login":
         events = get_profiles_by_login(fraza) #todo: rename
     elif radio == "gra":
-        events = get_events_by_game(fraza)
-    elif radio == "city":
-        events = get_events_by_city(fraza)
+        events = get_events_by_game(user_id, fraza)
+    elif radio == "miasto":
+        events = get_events_by_city(user_id, fraza)
     else:
         raise Exception("not supported type")
     return render_template('main/main_page.html', events=events)
