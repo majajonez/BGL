@@ -36,7 +36,7 @@ def search():
 @bp.route('/main_page', methods=['GET', 'POST'])
 def main_page():
     user_id = session.get('user_id')
-    events = get_events(user_id)
+    events = get_events_non_author(user_id)
     return render_template('main/main_page.html', events=events)
 
 

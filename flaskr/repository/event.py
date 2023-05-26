@@ -103,6 +103,24 @@ def get_events_by_id(id, user_id):
     return Event(wydarzenie)
 
 
+def get_events_non_author(user_id):
+    conn = get_db()
+    cur = conn.cursor()
+    sql_update_query = '''SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w
+                    LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id and uw.user_id = ?
+                    LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id
+                    WHERE w.user_id != ?'''
+    cur.execute(sql_update_query, [user_id, user_id])
+    wydarzenia = cur.fetchall()
+    cur.close()
+    event_list = []
+
+    for w in wydarzenia:
+        event = Event(w)
+        event_list.append(event)
+    return event_list
+
+
 def create_event(user_id, title, description, when, where, the_number_of_seats, photo):
     conn = get_db()
     cur = conn.cursor()
