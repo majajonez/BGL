@@ -88,7 +88,9 @@ def profile_viev(login):
     user = get_user_by_login(login)
     user_id = user.id
     events = get_events(user_id)
-    return render_template('main/profile_viev.html', user=user, events=events)
+    my_events = get_events_by_user_id(user_id)
+    joined_events = get_events_non_author(user_id)
+    return render_template('main/profile_viev.html', user=user, my_events=my_events, joined_events=joined_events)
 
 
 @bp.route('/upload_photo', methods=['POST'])

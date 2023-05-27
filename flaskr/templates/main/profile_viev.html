@@ -19,12 +19,11 @@
 </div>
 <br>
 
-<h5>Wydarzenia, w których bierze udział {{ user.login|e }}:</h5>
-
 <div class="container">
     <div class="row">
         <div class="col">
-            {% for event in events %}
+            <h5>Wydarzenia użytkownika {{ user.login|e }}:</h5>
+            {% for event in my_events %}
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
@@ -69,7 +68,49 @@
         </div>
 
        <div class="col">
-            drugi kontenesssr
+           <h5>Wydarzenia, w których bierze udział {{ user.login|e }}:</h5>
+            {% for event in joined_events %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        {% if event.type == "event" %}
+                        <div style="width: 18rem;">
+                            <img src="data:image/jpg;base64,{{ event.photo }}" class="card-img-top" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
+                            <p class="card-text">
+                            <div><b>Organizator:</b><a href="/profile_viev/{{ event.login }}" class="btn btn-link">{{
+                                event.login|e
+                                }}</a></div>
+                            <div><b>Opis gry: </b>{{ event.opis|e }}</div>
+                            <div><b>Kiedy? </b>{{ event.kiedy|e }}</div>
+                            <div><b>Gdzie? </b>{{ event.gdzie|e }}</div>
+                            <div><b>Wolne miejsca: </b>{{ event.ile_miejsc|e }}</div>
+                            <br>
+                            <form method="post" action="/event/{{ event.id }}/join">
+                                {% if event.can_join %}
+                                <button class="btn btn-primary" type="submit">Dołącz</button>
+                                {% else %}
+                                <button class="btn btn-primary" type="submit" disabled data-bs-toggle="button">
+                                    Dołączono
+                                </button>
+                                {% endif %}
+                            </form>
+                            <a href="event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
+                        </div>
+                        {% else %}
+                        <div class="card-body">
+
+                            <p class="card-text">
+                            <div>{{ event.city|e }}</div>
+                            <div>{{ event.opis|e }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
        </div>
     </div>
 </div>
