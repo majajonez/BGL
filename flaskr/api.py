@@ -21,23 +21,25 @@ def search():
     args = request.form
     fraza = args.get("fraza", None)
     radio = args.get("btnradio", None)
+    return render_search(radio, fraza)
+
+
+def render_search(radio, fraza):
     user_id = session.get('user_id')
     if radio == "login":
-        events = get_profiles_by_login(fraza) #todo: rename
+        entities = get_profiles_by_login(fraza)
     elif radio == "gra":
-        events = get_events_by_game(user_id, fraza)
+        entities = get_events_by_game(user_id, fraza)
     elif radio == "miasto":
-        events = get_events_by_city(user_id, fraza)
+        entities = get_events_by_city(user_id, fraza)
     else:
         raise Exception("not supported type")
-    return render_template('main/main_page.html', events=events)
+    return render_template('main/main_page.html', entities=entities)
 
 
 @bp.route('/main_page', methods=['GET', 'POST'])
 def main_page():
-    user_id = session.get('user_id')
-    events = get_events_non_author(user_id)
-    return render_template('main/main_page.html', events=events)
+    return render_search("gra", "")
 
 
 @bp.route('/event', methods=['GET', 'POST'])
