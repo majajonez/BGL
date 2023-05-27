@@ -42,14 +42,14 @@
                 <div><b>Gdzie? </b>{{ entity.gdzie|e }}</div>
                 <div><b>Wolne miejsca: </b>{{ entity.ile_miejsc|e }}</div>
                 <br>
-                <form method="post" action="/entity/{{ entity.id }}/join">
+                <form method="post" action="/event/{{ entity.id }}/join">
                      {% if entity.can_join %}
                         <button class="btn btn-primary" type="submit">Dołącz</button>
                     {% else %}
                         <button class="btn btn-primary" type="submit" disabled data-bs-toggle="button">Dołączono</button>
                     {% endif %}
                 </form>
-                <a href="entity_details/{{ entity.id }}" class="btn btn-primary">Szczegóły</a>
+                <a href="/event_details/{{ entity.id }}" class="btn btn-primary">Szczegóły</a>
             </div>
             {% else %}
             <div class="card-body">
