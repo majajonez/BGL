@@ -29,12 +29,12 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     {% if g.user %}
                     <li class="nav-item"><span class="nav-link">Witaj, {{ g.user.login }}</span></li>
-                    <li class="nav-item"><a class="nav-link active" tabindex="-1" href="{{ url_for('auth.logout') }}">Log
+                    <li class="nav-item"><a id="logout_button" class="nav-link active" tabindex="-1" href="{{ url_for('auth.logout') }}">Log
                         Out</a></li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link active" tabindex="-1" href="{{ url_for('auth.register') }}">Register</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link active" tabindex="-1" href="{{ url_for('auth.login') }}">Log
+                    <li class="nav-item"><a id="login_button" class="nav-link active" tabindex="-1" href="{{ url_for('auth.login') }}">Log
                         In</a></li>
                     {% endif %}
                 </ul>
