@@ -33,7 +33,7 @@ def init_db_for_connection(conn):
                         'jaka_gra text NOT NULL,'
                         'opis text,'
                         'kiedy text NOT NULL,'
-                        'gdzie` text NOT NULL,'
+                        'gdzie text NOT NULL,'
                         'ile_miejsc smallint,'
                         'photo bytea);'
                         )
