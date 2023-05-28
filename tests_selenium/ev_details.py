@@ -1,5 +1,4 @@
 from time import sleep
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -19,9 +18,19 @@ password_input.send_keys('123')
 button = driver.find_element(by=By.XPATH, value="//input[@type='submit']")
 button.click()
 
-sleep(3)
+sleep(2)
+
+button_event_details = driver.find_element(by=By.XPATH, value="//a[@href='/event_details/1']")
+button_event_details.click()
+
+sleep(2)
+
+excepted_url = 'http://127.0.0.1:5000/event_details/1'
+current_url = driver.current_url
+
+
+assert("Szczegóły wydarzenia" in driver.page_source)
+
+sleep(2)
 
 driver.close()
-
-
-
