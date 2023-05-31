@@ -1,5 +1,7 @@
+from datetime import date
 from faker import *
 import random
+
 
 cities = ['Tokio', 'Delhi', 'Szanghaj', 'São Paulo', 'Meksyk', 'Kair', 'Mumbai', 'Pekin', 'Dhaka', 'Osaka',
           'Nowy Jork', 'Karaczi', 'Calcutta', 'Istanbul', 'Buenos Aires', 'Lagos', 'Kinshasa', 'Rio de Janeiro',
@@ -12,6 +14,8 @@ cities = ['Tokio', 'Delhi', 'Szanghaj', 'São Paulo', 'Meksyk', 'Kair', 'Mumbai'
           'Aleppo', 'Indore', 'Omsk', 'Kandahar', 'Lucknow', 'Baku', 'Surabaja', 'Al-Madinah', 'Dammam',
           'Patna', 'Houston', 'Warszawa']
 
+date_ = date.today()
+
 
 class Random_user():
     def __init__(self):
@@ -21,3 +25,14 @@ class Random_user():
         self.email = self.name + '@gmail.com'
         self.password = self.name + str(len(person))
         self.city = random.choice(cities)
+
+
+
+class Random_event():
+    def __init__(self):
+        self.title = f'test_event {random.choice(cities)} {date_}'
+        self.description = 'testy gry w dniu' + str(date_)
+        self.when = str(date_)
+        self.where = random.choice(cities)
+        self.seats = 4
+
