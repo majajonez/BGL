@@ -9,7 +9,7 @@
     <form class="search-bar" method="post" action="search">
         <div class="d-flex">
             <input class="form-control me-2" type="search" name="fraza" placeholder="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button id='button_search' class="btn btn-outline-success" type="submit">Search</button>
         </div>
 
         <div class="btn-group d-flex" role="group">
@@ -44,7 +44,7 @@
                 <br>
                 <form method="post" action="/event/{{ entity.id }}/join">
                      {% if entity.can_join %}
-                        <button class="btn btn-primary" type="submit">Dołącz</button>
+                        <button id='button_join' class="btn btn-primary" type="submit">Dołącz</button>
                     {% else %}
                         <button class="btn btn-primary" type="submit" disabled data-bs-toggle="button">Dołączono</button>
                     {% endif %}
