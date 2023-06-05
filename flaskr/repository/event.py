@@ -100,7 +100,10 @@ def get_events_by_id(id, user_id):
     cur.execute(sql_update_query, [id])
     wydarzenie = cur.fetchone()
     cur.close()
-    return Event(wydarzenie)
+    if wydarzenie:
+        return Event(wydarzenie)
+    else:
+        return None
 
 
 def get_events_non_author(user_id):

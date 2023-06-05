@@ -16,12 +16,14 @@ def get_profiles_by_login(login):
     cur.execute(sql_update_query, ['%' + login + '%'])
     profile = cur.fetchall()
     cur.close()
-    profil_list = []
-
-    for p in profile:
-        person = Person(p)
-        profil_list.append(person)
-    return profil_list
+    if profile:
+        profil_list = []
+        for p in profile:
+            person = Person(p)
+            profil_list.append(person)
+        return profil_list
+    else:
+        return None
 
 
 def update_profile(file, g):

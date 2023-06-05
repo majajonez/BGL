@@ -34,7 +34,10 @@ def render_search(radio, fraza):
         entities = get_events_by_city(user_id, fraza)
     else:
         raise Exception("not supported type")
-    return render_template('main/main_page.html', entities=entities)
+    if entities:
+        return render_template('main/main_page.html', entities=entities)
+    else:
+        return render_template('main/not_found.html')
 
 
 @bp.route('/main_page', methods=['GET', 'POST'])
@@ -68,7 +71,10 @@ def event():
 @bp.route('/event_details/<id>', methods=['GET', 'POST'])
 def event_details(id):
     event = get_events_by_id(id, g.user.id)
-    return render_template('main/event_details.html', event=event)
+    if event is not None:
+        return render_template('main/event_details.html', event=event)
+    else:
+        return render_template('main/not_found.html')
 
 
 @bp.route('/event/<id>/join', methods=['POST'])
@@ -88,11 +94,14 @@ def my_events():
 @bp.route('/profile_viev/<login>', methods=['GET'])
 def profile_viev(login):
     user = get_user_by_login(login)
-    user_id = user.id
-    events = get_events(user_id)
-    my_events = get_events_by_user_id(user_id)
-    joined_events = get_events_non_author(user_id)
-    return render_template('main/profile_viev.html', user=user, my_events=my_events, joined_events=joined_events)
+    if user:
+        user_id = user.id
+        events = get_events(user_id)
+        my_events = get_events_by_user_id(user_id)
+        joined_events = get_events_non_author(user_id)
+        return render_template('main/profile_viev.html', user=user, my_events=my_events, joined_events=joined_events)
+    else:
+        return render_template('main/not_found.html')
 
 
 @bp.route('/upload_photo', methods=['POST'])

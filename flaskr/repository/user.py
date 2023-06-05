@@ -43,8 +43,10 @@ def get_user_by_login(login):
     cur.execute(sql_update_query, [login])
     uzytkownik = cur.fetchone()
     cur.close()
-    return User(uzytkownik)
-
+    if uzytkownik:
+        return User(uzytkownik)
+    else:
+        return None
 
 def create_user(user, password2, email, city):
     conn = get_db()
