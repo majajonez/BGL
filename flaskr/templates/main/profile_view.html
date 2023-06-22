@@ -17,6 +17,9 @@
         <li class="list-group-item">{{ user.opis|e }}</li>
     </ul>
 </div>
+<form method="post" action="/profile_view/{{ user.login }}/join">
+    <button class="btn btn-primary" type="submit">dodaj do znajomych</button>
+</form>
 <br>
 
 <div class="container">
@@ -51,7 +54,7 @@
                                 </button>
                                 {% endif %}
                             </form>
-                            <a href="event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
+                            <a href="/event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
                         </div>
                         {% else %}
                         <div class="card-body">
@@ -67,8 +70,8 @@
             {% endfor %}
         </div>
 
-       <div class="col">
-           <h5>Wydarzenia, w których bierze udział {{ user.login|e }}:</h5>
+        <div class="col">
+            <h5>Wydarzenia, w których bierze udział {{ user.login|e }}:</h5>
             {% for event in joined_events %}
             <div class="row">
                 <div class="col-sm-12">
@@ -97,7 +100,7 @@
                                 </button>
                                 {% endif %}
                             </form>
-                            <a href="event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
+                            <a href="/event_details/{{ event.id }}" class="btn btn-primary">Szczegóły</a>
                         </div>
                         {% else %}
                         <div class="card-body">
@@ -111,7 +114,7 @@
                 </div>
             </div>
             {% endfor %}
-       </div>
+        </div>
     </div>
 </div>
 

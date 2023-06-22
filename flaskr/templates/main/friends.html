@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+
+{% for entity in entities %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card ">
+            <div style="width: 18rem;">
+                <img src="data:image/jpg;base64,{{ entity.photo }}" class="card-img-top" alt="">
+            </div>
+            <div class="card-body">
+
+                <p class="card-text">
+                <div>{{ entity.login|e }}</div>
+                <div>{{ entity.city|e }}</div>
+                <div>{{ entity.opis|e }}</div>
+
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% endblock %}

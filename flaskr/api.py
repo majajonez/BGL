@@ -91,17 +91,31 @@ def my_events():
     return render_template('main/my_events.html', events=events)
 
 
-@bp.route('/profile_viev/<login>', methods=['GET'])
-def profile_viev(login):
+@bp.route('/profile_view/<login>', methods=['GET'])
+def profile_view(login):
     user = get_user_by_login(login)
     if user:
         user_id = user.id
         events = get_events(user_id)
         my_events = get_events_by_user_id(user_id)
         joined_events = get_events_non_author(user_id)
-        return render_template('main/profile_viev.html', user=user, my_events=my_events, joined_events=joined_events)
+        return render_template('main/profile_view.html', user=user, my_events=my_events, joined_events=joined_events)
     else:
         return render_template('main/not_found.html')
+
+
+@bp.route('/friends', methods=['POST'])
+def friends():
+    return render_template('main/main_page.html')
+
+
+@bp.route('/profile_view/<login>/join', methods=['POST'])
+def make_friends(login):
+    user_id = session.get('user_id')
+    friend = get_user_by_login(login)
+    friend_id = friend.id
+    friend_join(user_id, friend_id)
+    return profile_view(login)
 
 
 @bp.route('/upload_photo', methods=['POST'])

@@ -50,6 +50,10 @@ def init_db_for_connection(conn):
             cur.execute('CREATE TABLE uczestnicy_wydarzen (user_id integer NOT NULL, '
                         'event_id integer NOT NULL);'
                         )
+            cur.execute('DROP TABLE IF EXISTS znajomi;')
+            cur.execute('CREATE TABLE znajomi (user_id integer NOT NULL, '
+                        'friend_id integer NOT NULL);'
+                        )
 
             conn.commit()
 
