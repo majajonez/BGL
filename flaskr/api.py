@@ -96,7 +96,6 @@ def profile_view(login):
     user = get_user_by_login(login)
     if user:
         user_id = user.id
-        events = get_events(user_id)
         my_events = get_events_by_user_id(user_id)
         joined_events = get_events_non_author(user_id)
         return render_template('main/profile_view.html', user=user, my_events=my_events, joined_events=joined_events)
