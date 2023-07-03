@@ -39,7 +39,9 @@ def get_user(x):
 def get_user_by_login(login):
     conn = get_db()
     cur = conn.cursor()
-    sql_update_query = '''SELECT * FROM logowanie_uzytkownikow WHERE login = ?'''
+    sql_update_query = '''SELECT lu.*, z.user_id is null as can_join FROM logowanie_uzytkownikow lu
+                        LEFT JOIN znajomi z ON lu.id = z.friend_id
+                        WHERE lu.login = ?'''
     cur.execute(sql_update_query, [login])
     uzytkownik = cur.fetchone()
     cur.close()
@@ -60,3 +62,33 @@ def create_user(user, password2, email, city):
                 )
     conn.commit()
     cur.close()
+
+
+def friend_join(user_id, friend_id):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO znajomi (user_id, friend_id)'
+                'VALUES (?, ?)',
+                (user_id,
+                 friend_id)
+                )
+    conn.commit()
+    cur.close()
+
+
+def friend_invite(user_id):
+    id = user_id
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''SELECT user_id FROM znajomi WHERE friend_id = ? AND confirm is NULL''', [id])
+    invitations = cur.fetchall()
+    cur.close()
+    print(invitations)
+    if invitations:
+        invitations_list = []
+        for invitation in invitations:
+            friend = get_user_by_id(invitation[0])
+            invitations_list.append(friend)
+        return invitations_list
+    else:
+        return []

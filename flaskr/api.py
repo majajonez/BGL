@@ -103,18 +103,29 @@ def profile_view(login):
         return render_template('main/not_found.html')
 
 
-@bp.route('/friends', methods=['POST'])
+@bp.route('/friends', methods=['GET'])
 def friends():
-    return render_template('main/main_page.html')
+    id = session.get('user_id')
+    friends_invit = friend_invite(id)
+    return render_template('main/friends.html', friends_invit=friends_invit)
 
 
-@bp.route('/profile_view/<login>/join', methods=['POST'])
-def make_friends(login):
+@bp.route('/profile_view/<login>/invitation', methods=['POST'])
+def send_invit_friend(login):
     user_id = session.get('user_id')
     friend = get_user_by_login(login)
     friend_id = friend.id
     friend_join(user_id, friend_id)
     return profile_view(login)
+
+
+# @bp.route('/profile_view/<login>/join', methods=['POST'])
+# def make_friends(login):
+#     user_id = session.get('user_id')
+#     friend = get_user_by_login(login)
+#     friend_id = friend.id
+#     friend_join(user_id, friend_id)
+#     return profile_view(login)
 
 
 @bp.route('/upload_photo', methods=['POST'])

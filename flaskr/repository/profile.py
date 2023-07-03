@@ -34,15 +34,3 @@ def update_profile(file, g):
                 )
     conn.commit()
     cur.close()
-
-
-def friend_join(user_id, friend_id):
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute('INSERT INTO znajomi (user_id, friend_id)'
-                'VALUES (?, ?)',
-                (user_id,
-                 friend_id)
-                )
-    conn.commit()
-    cur.close()
