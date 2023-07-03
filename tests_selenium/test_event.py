@@ -14,8 +14,8 @@ def test_new_event():
     login_input = selenium.find_element(by=By.ID, value='username')
     password_input = selenium.find_element(by=By.ID, value='password')
 
-    login_input.send_keys('maja2')
-    password_input.send_keys('qwe')
+    login_input.send_keys('maja')
+    password_input.send_keys('123')
 
     button = selenium.find_element(by=By.XPATH, value="//input[@type='submit']")
     button.click()

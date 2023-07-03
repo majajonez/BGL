@@ -6,23 +6,24 @@
 
 {% block content %}
 
-{% for entity in entities %}
+{% for invit in friends_invit %}
 <div class="row">
     <div class="col-sm-12">
         <div class="card ">
             <div style="width: 18rem;">
-                <img src="data:image/jpg;base64,{{ entity.photo }}" class="card-img-top" alt="">
+                <img src="data:image/jpg;base64,{{ invit.photo }}" class="card-img-top" alt="">
             </div>
             <div class="card-body">
 
                 <p class="card-text">
-                <div>{{ entity.login|e }}</div>
-                <div>{{ entity.city|e }}</div>
-                <div>{{ entity.opis|e }}</div>
+                <div>{{ invit.login|e }}</div>
+                <div>{{ invit.city|e }}</div>
+                <div>{{ invit.opis|e }}</div>
 
             </div>
-            {% endif %}
         </div>
+        </div>
+    </div>
         {% endfor %}
 
         {% endblock %}
