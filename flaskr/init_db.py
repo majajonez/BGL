@@ -51,8 +51,10 @@ def init_db_for_connection(conn):
                         'event_id integer NOT NULL);'
                         )
             cur.execute('DROP TABLE IF EXISTS znajomi;')
-            cur.execute('CREATE TABLE znajomi (user_id integer NOT NULL, '
-                        'friend_id integer NOT NULL);'
+            cur.execute('CREATE TABLE znajomi (user_id integer NOT NULL,'
+                        'friend_id integer NOT NULL,'
+                        'confirm INTEGER CHECK(confirm IN (0, 1)),'
+                        'CONSTRAINT unikalna_para UNIQUE (user_id, friend_id));'
                         )
 
             conn.commit()
