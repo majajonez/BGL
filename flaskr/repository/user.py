@@ -80,14 +80,15 @@ def friend_invite(user_id):
     id = user_id
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('''SELECT user_id FROM znajomi WHERE friend_id = ? AND confirm is NULL''', [id])
+    cur.execute('''SELECT lu.*, z.friend_id FROM logowanie_uzytkownikow lu
+                LEFT JOIN znajomi z ON lu.id = z.friend_id
+                WHERE z.friend_id = ? AND confirm is NULL''', [id])
     invitations = cur.fetchall()
     cur.close()
-    print(invitations)
     if invitations:
         invitations_list = []
         for invitation in invitations:
-            friend = get_user_by_id(invitation[0])
+            friend = User(invitation)
             invitations_list.append(friend)
         return invitations_list
     else:
