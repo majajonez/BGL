@@ -119,13 +119,12 @@ def send_invit_friend(login):
     return profile_view(login)
 
 
-# @bp.route('/profile_view/<login>/join', methods=['POST'])
-# def make_friends(login):
-#     user_id = session.get('user_id')
-#     friend = get_user_by_login(login)
-#     friend_id = friend.id
-#     friend_join(user_id, friend_id)
-#     return profile_view(login)
+@bp.route('/friends/<friend_id>/join', methods=['POST'])
+def confirm_friends(friend_id):
+    user_id = session.get('user_id')
+    friend_id = friend_id
+    confirm_invit(user_id, friend_id)
+    return friends()
 
 
 @bp.route('/upload_photo', methods=['POST'])

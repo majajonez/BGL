@@ -81,7 +81,7 @@ def friend_invite(user_id):
     conn = get_db()
     cur = conn.cursor()
     cur.execute('''SELECT lu.*, z.friend_id FROM logowanie_uzytkownikow lu
-                LEFT JOIN znajomi z ON lu.id = z.friend_id
+                LEFT JOIN znajomi z ON lu.id = z.user_id
                 WHERE z.friend_id = ? AND confirm is NULL''', [id])
     invitations = cur.fetchall()
     cur.close()
@@ -93,3 +93,14 @@ def friend_invite(user_id):
         return invitations_list
     else:
         return []
+
+
+def confirm_invit(user_id, friend_id):
+    print(user_id)
+    print(friend_id)
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('UPDATE znajomi SET confirm=? WHERE user_id = ? AND friend_id = ?', (1, friend_id, user_id)
+                )
+    conn.commit()
+    cur.close()

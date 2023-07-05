@@ -19,7 +19,10 @@
                 <div>{{ invit.login|e }}</div>
                 <div>{{ invit.city|e }}</div>
                 <div>{{ invit.opis|e }}</div>
-
+                <br>
+                <form method="post" action="/friends/ {{ invit.id }}/join">
+                    <button class="btn btn-primary" type="submit">Potwierdź znajomość</button>
+                </form>form>
             </div>
         </div>
         </div>
