@@ -104,3 +104,22 @@ def confirm_invit(user_id, friend_id):
                 )
     conn.commit()
     cur.close()
+
+
+def friends_by_user_id(user_id):
+    id = user_id
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''SELECT lu.*, z.friend_id, user_id FROM logowanie_uzytkownikow lu
+                LEFT JOIN znajomi z ON lu.id = z.friend_id OR lu.id = z.user_id
+                WHERE z.confirm is "1" AND z.friend_id = ? AND lu.id IS NOT ? OR z.confirm is "1" AND z.user_id = ? AND lu.id IS NOT ?''', [id, id, id, id])
+    friends = cur.fetchall()
+    cur.close()
+    if friends:
+        friends_list = []
+        for friend in friends:
+            friend = User(friend)
+            friends_list.append(friend)
+        return friends_list
+    else:
+        return []

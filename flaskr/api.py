@@ -107,7 +107,8 @@ def profile_view(login):
 def friends():
     id = session.get('user_id')
     friends_invit = friend_invite(id)
-    return render_template('main/friends.html', friends_invit=friends_invit)
+    friends = friends_by_user_id(id)
+    return render_template('main/friends.html', friends_invit=friends_invit, friends=friends)
 
 
 @bp.route('/profile_view/<login>/invitation', methods=['POST'])

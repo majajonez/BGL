@@ -6,27 +6,55 @@
 
 {% block content %}
 
-{% for invit in friends_invit %}
-<div class="row">
-    <div class="col-sm-12">
-        <div class="card ">
-            <div style="width: 18rem;">
-                <img src="data:image/jpg;base64,{{ invit.photo }}" class="card-img-top" alt="">
-            </div>
-            <div class="card-body">
 
-                <p class="card-text">
-                <div>{{ invit.login|e }}</div>
-                <div>{{ invit.city|e }}</div>
-                <div>{{ invit.opis|e }}</div>
-                <br>
-                <form method="post" action="/friends/ {{ invit.id }}/join">
-                    <button class="btn btn-primary" type="submit">Potwierdź znajomość</button>
-                </form>form>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5>Znajomi: </h5>
+            {% for friend in friends %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div style="width: 18rem;">
+                            <img src="data:image/jpg;base64,{{ friend.photo }}" class="card-img-top" alt="">
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                            <div><a href="/profile_viev/{{ friend.login }}" class="btn btn-link">{{
+                                friend.login|e }}</a></div>
+                            <div>{{ friend.opis|e }}</div>
+                            <div>{{ friend.city|e }}</div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
             </div>
-        </div>
-        </div>
+
+        <div class="col">
+            <h5>Prośba o dołączenie do znajomych: </h5>
+            {% for invit in friends_invit %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div style="width: 18rem;">
+                            <img src="data:image/jpg;base64,{{ invit.photo }}" class="card-img-top" alt="">
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                            <div><a href="/profile_viev/{{ invit.login }}" class="btn btn-link">{{
+                                invit.login|e }}</a></div>
+                            <div>{{ invit.opis|e }}</div>
+                            <div>{{ invit.city|e }}</div>
+                            <form method="post" action="/friends/ {{ invit.id }}/join">
+                                <button class="btn btn-primary" type="submit">Potwierdź znajomość</button>
+                            </form>form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
     </div>
-        {% endfor %}
+</div>
 
-        {% endblock %}
+{% endblock %}
