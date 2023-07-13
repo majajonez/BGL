@@ -6,7 +6,6 @@
 
 {% block content %}
 
-
 <div class="container">
     <div class="row">
         <div class="col">
@@ -20,16 +19,20 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text">
-                            <div><a href="/profile_viev/{{ friend.login }}" class="btn btn-link">{{
+                            <div><a href="/profile_view/{{ friend.login }}" class="btn btn-link">{{
                                 friend.login|e }}</a></div>
                             <div>{{ friend.opis|e }}</div>
                             <div>{{ friend.city|e }}</div>
                             <br>
+                            <form method="post" action="/friends/ {{ friend.id }}/break">
+                                <button class="btn btn-primary" type="submit">Usuń ze znajomych</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             {% endfor %}
             </div>
+        </div>
 
         <div class="col">
             <h5>Prośba o dołączenie do znajomych: </h5>
@@ -48,12 +51,13 @@
                             <div>{{ invit.city|e }}</div>
                             <form method="post" action="/friends/ {{ invit.id }}/join">
                                 <button class="btn btn-primary" type="submit">Potwierdź znajomość</button>
-                            </form>form>
+                            </form>
                         </div>
                     </div>
                 </div>
             {% endfor %}
             </div>
+        </div>
     </div>
 </div>
 

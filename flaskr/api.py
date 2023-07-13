@@ -98,7 +98,10 @@ def profile_view(login):
         user_id = user.id
         my_events = get_events_by_user_id(user_id)
         joined_events = get_events_non_author(user_id)
-        return render_template('main/profile_view.html', user=user, my_events=my_events, joined_events=joined_events)
+        friend_id = session.get('user_id')
+        friendship = are_friends(user_id, friend_id)
+        print(friendship)
+        return render_template('main/profile_view.html', user=user, my_events=my_events, joined_events=joined_events, friendship=friendship)
     else:
         return render_template('main/not_found.html')
 
@@ -125,6 +128,14 @@ def confirm_friends(friend_id):
     user_id = session.get('user_id')
     friend_id = friend_id
     confirm_invit(user_id, friend_id)
+    return friends()
+
+
+@bp.route('/friends/<friend_id>/break', methods=['POST'])
+def break_off_friendship(friend_id):
+    user_id = session.get('user_id')
+    friend_id = friend_id
+    friends_brake_off(user_id, friend_id)
     return friends()
 
 

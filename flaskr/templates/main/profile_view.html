@@ -17,9 +17,15 @@
         <li class="list-group-item">{{ user.opis|e }}</li>
     </ul>
 </div>
-<form method="post" action="/profile_view/{{ user.login }}/invitation">
-    <button class="btn btn-primary" type="submit">dodaj do znajomych</button>
-</form>
+{% if friendship == 1 %}
+    <form method="post" action="/friends/{{ user.id }}/break">
+        <button class="btn btn-primary" type="submit">Usuń ze znajomych</button>
+    </form>
+{% else %}
+    <form method="post" action="/profile_view/{{ user.login }}/invitation">
+        <button class="btn btn-primary" type="submit">Dodaj do znajomych</button>
+    </form>
+{% endif %}
 <br>
 
 <div class="container">
@@ -37,7 +43,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
                             <p class="card-text">
-                            <div><b>Organizator:</b><a href="/profile_viev/{{ event.login }}" class="btn btn-link">{{
+                            <div><b>Organizator:</b><a href="/profile_view/{{ event.login }}" class="btn btn-link">{{
                                 event.login|e
                                 }}</a></div>
                             <div><b>Opis gry: </b>{{ event.opis|e }}</div>
@@ -83,7 +89,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ event.jaka_gra|e }}</h5>
                             <p class="card-text">
-                            <div><b>Organizator:</b><a href="/profile_viev/{{ event.login }}" class="btn btn-link">{{
+                            <div><b>Organizator:</b><a href="/profile_view/{{ event.login }}" class="btn btn-link">{{
                                 event.login|e
                                 }}</a></div>
                             <div><b>Opis gry: </b>{{ event.opis|e }}</div>

@@ -123,3 +123,23 @@ def friends_by_user_id(user_id):
         return friends_list
     else:
         return []
+
+
+def friends_brake_off(user_id, friend_id):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM znajomi WHERE user_id = ? AND friend_id = ? OR user_id = ? AND friend_id = ?', (user_id, friend_id, friend_id, user_id)
+                )
+    conn.commit()
+    cur.close()
+
+
+def are_friends(user_id, friend_id):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT confirm FROM znajomi WHERE user_id = ? AND friend_id = ? OR user_id = ? AND friend_id = ?',
+                (user_id, friend_id, friend_id, user_id)
+                )
+    confirm = cur.fetchone()
+    cur.close()
+    return confirm[0]
