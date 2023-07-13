@@ -140,6 +140,10 @@ def are_friends(user_id, friend_id):
     cur.execute('SELECT confirm FROM znajomi WHERE user_id = ? AND friend_id = ? OR user_id = ? AND friend_id = ?',
                 (user_id, friend_id, friend_id, user_id)
                 )
-    confirm = cur.fetchone()
+    confirm_friend = cur.fetchone()
     cur.close()
-    return confirm[0]
+    if confirm_friend is None:
+        confirm = 3
+    else:
+        confirm = confirm_friend[0]
+    return confirm
