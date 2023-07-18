@@ -100,8 +100,11 @@ def profile_view(login):
         joined_events = get_events_non_author(user_id)
         friend_id = session.get('user_id')
         friendship = are_friends(user_id, friend_id)
-        print(friendship)
-        return render_template('main/profile_view.html', user=user, my_events=my_events, joined_events=joined_events, friendship=friendship)
+        my_profile = 'False'
+        if user_id == friend_id:
+            my_profile = 'True'
+        return render_template('main/profile_view.html', user=user, my_events=my_events, joined_events=joined_events,
+                               friendship=friendship, my_profile=my_profile)
     else:
         return render_template('main/not_found.html')
 

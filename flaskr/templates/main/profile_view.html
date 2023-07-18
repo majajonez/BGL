@@ -17,16 +17,20 @@
         <li class="list-group-item">{{ user.opis|e }}</li>
     </ul>
 </div>
-{% if friendship == 1 %}
-    <form method="post" action="/friends/{{ user.id }}/break">
-        <button class="btn btn-primary" type="submit">Usuń ze znajomych</button>
-    </form>
-{% elif friendship == 3 %}
-    <form method="post" action="/profile_view/{{ user.login }}/invitation">
-        <button class="btn btn-primary" type="submit">Dodaj do znajomych</button>
-    </form>
+{% if my_profile == 'False' %}
+    {% if friendship == 1 %}
+        <form method="post" action="/friends/{{ user.id }}/break">
+            <button class="btn btn-primary" type="submit">Usuń ze znajomych</button>
+        </form>
+    {% elif friendship == 3 %}
+        <form method="post" action="/profile_view/{{ user.login }}/invitation">
+            <button class="btn btn-primary" type="submit">Dodaj do znajomych</button>
+        </form>
+    {% else %}
+        <b>Wysłano zaproszenie</b>
+    <br>
+    {% endif %}
 {% else %}
-    <b>Wysłano zaproszenie</b>
 <br>
 {% endif %}
 <br>
