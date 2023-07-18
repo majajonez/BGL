@@ -112,8 +112,8 @@ def get_events_non_author(user_id):
     sql_update_query = '''SELECT w.*, uw.user_id is null as can_join, lu.login FROM wydarzenia w
                     LEFT JOIN uczestnicy_wydarzen uw ON w.id = uw.event_id and uw.user_id = ?
                     LEFT JOIN logowanie_uzytkownikow lu ON w.user_id = lu.id
-                    WHERE w.user_id != ?'''
-    cur.execute(sql_update_query, [user_id, user_id])
+                    WHERE w.user_id != ? AND uw.user_id = ?'''
+    cur.execute(sql_update_query, [user_id, user_id, user_id])
     wydarzenia = cur.fetchall()
     cur.close()
     event_list = []
